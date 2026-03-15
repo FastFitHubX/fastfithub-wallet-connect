@@ -1,6 +1,5 @@
 {
-  "framework": null,
-{
-  "buildCommand": "pnpm run build",
-  "outputDirectory": "dist/public"
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist"
 }
