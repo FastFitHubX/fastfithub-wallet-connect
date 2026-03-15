@@ -1,1 +1,5 @@
-https://jsonlint.com
+{
+  "framework": null,
+  "buildCommand": "pnpm run build",
+  "outputDirectory": "dist/public"
+}
