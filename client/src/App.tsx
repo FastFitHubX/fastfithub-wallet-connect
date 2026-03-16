@@ -1,61 +1,79 @@
-import "./App.css"
-
-function App() {
+export default function App() {
   return (
     <div style={{
-      background:"#0f0f0f",
-      color:"white",
+      background:"#0b0b0c",
       minHeight:"100vh",
-      textAlign:"center",
-      padding:"40px"
+      color:"white",
+      fontFamily:"Inter, sans-serif",
+      padding:"30px",
+      display:"flex",
+      flexDirection:"column",
+      alignItems:"center"
     }}>
-      
-      <h1>FastFitHub Wallet</h1>
-      <p>Proof-of-Workout Protocol</p>
+
+      <h1 style={{fontSize:"26px",marginBottom:"20px"}}>
+        FastFitHub Wallet
+      </h1>
 
       <div style={card}>
-        HUBX Balance
-        <div style={balance}>120 HUBX</div>
+        <span style={label}>HUBX Balance</span>
+        <span style={amount}>120 HUBX</span>
       </div>
 
       <div style={card}>
-        DOGE Rewards
-        <div style={balance}>0.42 DOGE</div>
+        <span style={label}>DOGE Rewards</span>
+        <span style={amount}>0.42 DOGE</span>
       </div>
 
       <div style={card}>
-        BTC Rewards
-        <div style={balance}>0.00004 BTC</div>
+        <span style={label}>BTC Rewards</span>
+        <span style={amount}>0.00004 BTC</span>
       </div>
 
-      <button style={button}>Record Workout</button>
-      <button style={button}>Leaderboard</button>
+      <div style={{marginTop:"25px",display:"flex",gap:"12px"}}>
+        <button style={primary}>Record Workout</button>
+        <button style={secondary}>Leaderboard</button>
+      </div>
 
     </div>
   )
 }
 
 const card = {
-  background:"#1e1e1e",
-  padding:"20px",
+  width:"320px",
+  background:"#18181b",
   borderRadius:"12px",
-  width:"300px",
-  margin:"20px auto"
+  padding:"18px",
+  marginBottom:"14px",
+  display:"flex",
+  justifyContent:"space-between",
+  alignItems:"center"
 }
 
-const balance = {
-  fontSize:"24px",
-  color:"#f0c36d",
-  marginTop:"10px"
+const label = {
+  color:"#9ca3af",
+  fontSize:"14px"
 }
 
-const button = {
-  margin:"10px",
-  padding:"12px 18px",
+const amount = {
+  fontSize:"18px",
+  fontWeight:"600",
+  color:"#facc15"
+}
+
+const primary = {
+  background:"#facc15",
+  color:"#000",
   border:"none",
+  padding:"10px 16px",
   borderRadius:"8px",
-  background:"#f0c36d",
-  fontWeight:"bold"
+  fontWeight:"600"
 }
 
-export default App
+const secondary = {
+  background:"#27272a",
+  color:"#fff",
+  border:"none",
+  padding:"10px 16px",
+  borderRadius:"8px"
+}
