@@ -1,13 +1,13 @@
 export default async function handler(req, res) {
 
-  const { type, data } = req.body;
+  const interaction = req.body
 
-  // Discord ping verification
-  if (type === 1) {
-    return res.status(200).json({ type: 1 });
+  // Discord ping check
+  if (interaction.type === 1) {
+    return res.status(200).json({ type: 1 })
   }
 
-  const command = data.name;
+  const command = interaction.data.name
 
   if (command === "balance") {
     return res.status(200).json({
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
       data: {
         content: "💰 HUBX Balance: 120 HUBX"
       }
-    });
+    })
   }
 
   if (command === "leaderboard") {
@@ -24,16 +24,16 @@ export default async function handler(req, res) {
       data: {
         content: "🏆 Leaderboard coming soon"
       }
-    });
+    })
   }
 
   if (command === "workout") {
     return res.status(200).json({
       type: 4,
       data: {
-        content: "💪 Workout recorded successfully"
+        content: "💪 Workout recorded"
       }
-    });
+    })
   }
 
-} 
+}
