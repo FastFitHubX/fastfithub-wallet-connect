@@ -1,45 +1,61 @@
-import { Toaster } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
-import ErrorBoundary from "./components/ErrorBoundary";
-import { ThemeProvider } from "./contexts/ThemeContext";
-import { WalletProvider } from "./contexts/WalletContext";
-import Home from "./pages/Home";
-
-
-function Router() {
-  return (
-    <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
-      <Route component={NotFound} />
-    </Switch>
-  );
-}
-
-// NOTE: About Theme
-// - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
-//   to keep consistent foreground/background color across components
-// - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
+import "./App.css"
 
 function App() {
   return (
-    <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="light"
-        // switchable
-      >
-        <WalletProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Router />
-          </TooltipProvider>
-        </WalletProvider>
-      </ThemeProvider>
-    </ErrorBoundary>
-  );
+    <div style={{
+      background:"#0f0f0f",
+      color:"white",
+      minHeight:"100vh",
+      textAlign:"center",
+      padding:"40px"
+    }}>
+      
+      <h1>FastFitHub Wallet</h1>
+      <p>Proof-of-Workout Protocol</p>
+
+      <div style={card}>
+        HUBX Balance
+        <div style={balance}>120 HUBX</div>
+      </div>
+
+      <div style={card}>
+        DOGE Rewards
+        <div style={balance}>0.42 DOGE</div>
+      </div>
+
+      <div style={card}>
+        BTC Rewards
+        <div style={balance}>0.00004 BTC</div>
+      </div>
+
+      <button style={button}>Record Workout</button>
+      <button style={button}>Leaderboard</button>
+
+    </div>
+  )
 }
 
-export default App;
+const card = {
+  background:"#1e1e1e",
+  padding:"20px",
+  borderRadius:"12px",
+  width:"300px",
+  margin:"20px auto"
+}
+
+const balance = {
+  fontSize:"24px",
+  color:"#f0c36d",
+  marginTop:"10px"
+}
+
+const button = {
+  margin:"10px",
+  padding:"12px 18px",
+  border:"none",
+  borderRadius:"8px",
+  background:"#f0c36d",
+  fontWeight:"bold"
+}
+
+export default App
