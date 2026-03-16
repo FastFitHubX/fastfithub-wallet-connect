@@ -1,7 +1,11 @@
 {
-  "name": "fastfithub-wallet-connect",
+  "name": "hubxwallet",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
+  "dependencies": {
+    "discord-interactions": "^3.4.0"
+  },
   "engines": {
     "node": "24.x"
   }
