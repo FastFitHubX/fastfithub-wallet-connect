@@ -1,52 +1,44 @@
-import { verifyKey } from "discord-interactions";
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
-const PUBLIC_KEY = "8de35fd5e2e82c39cce29987c3533f299379757178828d0fc651d03f2b752fb1";
-
-async function getRawBody(req) {
-  const chunks = [];
-  for await (const chunk of req) {
-    chunks.push(chunk);
-  }
-  return Buffer.concat(chunks).toString("utf8");
-}
-
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(200).send("OK");
+
+  // Discord ping verification
+  if (req.body?.type === 1) {
+    return res.status(200).json({ type: 1 });
   }
 
-  const rawBody = await getRawBody(req);
+  // Handle slash commands
+  if (req.body?.type === 2) {
 
-  const signature = req.headers["x-signature-ed25519"];
-  const timestamp = req.headers["x-signature-timestamp"];
+    const command = req.body.data.name;
 
-  const isValidRequest = verifyKey(
-    rawBody,
-    signature,
-    timestamp,
-    PUBLIC_KEY
-  );
+    if (command === "workout") {
+      return res.status(200).json({
+        type: 4,
+        data: {
+          content: "🏋️ Workout recorded!"
+        }
+      });
+    }
 
-  if (!isValidRequest) {
-    return res.status(401).send("Invalid request signature");
+    if (command === "balance") {
+      return res.status(200).json({
+        type: 4,
+        data: {
+          content: "💰 Balance coming soon"
+        }
+      });
+    }
+
+    if (command === "leaderboard") {
+      return res.status(200).json({
+        type: 4,
+        data: {
+          content: "🏆 Leaderboard coming soon"
+        }
+      });
+    }
+
   }
 
-  const body = JSON.parse(rawBody);
+  return res.status(200).json({ type: 4, data: { content: "OK" } });
 
-  if (body.type === 1) {
-    return res.json({ type: 1 });
-  }
-
-  return res.json({
-    type: 4,
-    data: {
-      content: "FastFitHub interaction received",
-    },
-  });
 }
