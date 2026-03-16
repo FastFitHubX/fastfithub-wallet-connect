@@ -1,17 +1,5 @@
 {
   "name": "fastfithub-wallet-connect",
   "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "build": "vite build",
-    "dev": "vite",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "react": "^19.2.1",
-    "react-dom": "^19.2.1"
-  },
-  "devDependencies": {
-    "vite": "^7.1.9"
-  }
+  "private": true
 }
