@@ -73,16 +73,17 @@
 </div>
 
 <script type="module">
-import { createAppKit } from "https://esm.sh/@reown/appkit@1.7.7";
+import EthereumProvider from "https://esm.sh/@walletconnect/ethereum-provider@2.8.0";
 
-let appKit;
+let provider;
 
-// ✅ INIT ONLY ONCE
-async function init() {
-  appKit = createAppKit({
+async function initProvider() {
+  provider = await EthereumProvider.init({
     projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
 
-    networks: ["eip155:1"],
+    chains: [1],
+
+    showQrModal: true,
 
     metadata: {
       name: "HubX Wallet",
@@ -92,29 +93,26 @@ async function init() {
     }
   });
 
-  // 🔥 AUTO RESTORE SESSION (CRITICAL)
-  appKit.subscribeAccount((account) => {
-    if (account?.address) {
-      updateUI(account.address);
-    }
+  // 🔥 HANDLE CONNECTION
+  provider.on("connect", (info) => {
+    const address = provider.accounts[0];
+    updateUI(address);
   });
 
-  // 🔥 HANDLE CONNECT STATE
-  appKit.subscribeState((state) => {
-    if (state.connected) {
-      console.log("Connected");
-    }
+  // 🔥 HANDLE DISCONNECT
+  provider.on("disconnect", () => {
+    document.getElementById("connectBtn").innerText = "Connect Wallet";
   });
 }
 
-await init();
+await initProvider();
 
-// 🔥 BUTTON CLICK
+// 🔥 CONNECT BUTTON
 document.getElementById("connectBtn").onclick = async () => {
   try {
-    await appKit.open(); // opens full WalletConnect UI
-  } catch (e) {
-    console.error(e);
+    await provider.connect();
+  } catch (err) {
+    console.error(err);
   }
 };
 
