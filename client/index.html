@@ -96,27 +96,43 @@
 
 </div>
 
-<script>
-async function connectWallet() {
+<script type="module">
+import EthereumProvider from "https://esm.sh/@walletconnect/ethereum-provider@2.8.0";
+
+let provider;
+
+// 🔥 INIT ON LOAD (NO DELAY LATER)
+(async () => {
+  try {
+    provider = await EthereumProvider.init({
+      projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
+      chains: [1],
+      showQrModal: true,
+    });
+
+    console.log("Provider Ready");
+  } catch (e) {
+    console.error("Init failed", e);
+  }
+})();
+
+window.connectWallet = async function () {
   const btn = document.querySelector(".btn");
 
   try {
     btn.innerText = "Connecting...";
     btn.disabled = true;
 
-    // 🔥 If wallet NOT present → redirect
-    if (!window.ethereum) {
-      window.location.href =
-        "https://metamask.app.link/dapp/" + window.location.host;
+    if (!provider) {
+      alert("Still loading... try again");
+      btn.innerText = "Connect Wallet";
+      btn.disabled = false;
       return;
     }
 
-    // 🔥 Request connection
-    const accounts = await window.ethereum.request({
-      method: "eth_requestAccounts"
-    });
+    await provider.connect();
 
-    const address = accounts[0];
+    const address = provider.accounts[0];
 
     btn.innerText =
       address.slice(0,6) + "..." + address.slice(-4);
@@ -129,7 +145,7 @@ async function connectWallet() {
 
     alert("Connection failed");
   }
-}
+};
 </script>
 
 </body>
