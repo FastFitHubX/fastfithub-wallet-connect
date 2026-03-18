@@ -7,8 +7,7 @@
   <style>
     body {
       margin: 0;
-      background: radial-gradient(circle at top, #0f0f10, #000);
-      color: white;
+      background: linear-gradient(180deg, #ffffff, #f5f5f5);
       font-family: -apple-system;
       display: flex;
       justify-content: center;
@@ -20,65 +19,82 @@
       width: 92%;
       max-width: 420px;
       text-align: center;
-      padding: 20px 0;
     }
 
-    /* ✅ FIXED LOGO */
+    /* LOGO */
     .logo {
-      width: 100px;
-      height: 100px;
+      width: 90px;
+      height: 90px;
       object-fit: contain;
-      margin: 0 auto 10px;
-      display: block;
-      animation: float 3s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%,100% {transform: translateY(0);}
-      50% {transform: translateY(-6px);}
+      margin-bottom: 10px;
     }
 
     h1 {
       font-size: 16px;
-      color: #aaa;
-      margin-bottom: 25px;
+      color: #111;
+      margin-bottom: 20px;
     }
 
+    /* BUTTON */
     .btn {
       width: 100%;
       padding: 16px;
-      border-radius: 18px;
+      border-radius: 20px;
       border: none;
-      background: linear-gradient(135deg,#6d5cff,#8b5cf6);
+      background: linear-gradient(135deg,#d4af37,#000);
       color: white;
       font-size: 16px;
       margin-bottom: 10px;
-      box-shadow: 0 10px 30px rgba(139,92,246,0.4);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
     }
 
     .tag {
-      color: #777;
+      color: #666;
       font-size: 12px;
       margin-bottom: 20px;
     }
 
+    /* GLASS CARD */
     .card {
-      background: rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(20px);
       padding: 14px;
-      border-radius: 14px;
+      border-radius: 16px;
       margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
       font-size: 14px;
-      color: #aaa;
+      color: #333;
+      border: 1px solid rgba(0,0,0,0.05);
     }
 
     .highlight {
-      color: #facc15;
-      font-weight: bold;
+      color: #b8962e;
+      font-weight: 600;
     }
 
-    /* ✅ PREMIUM BOTTOM NAV */
+    /* TOKENS */
+    .tokens {
+      margin-top: 15px;
+    }
+
+    .token {
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(20px);
+      padding: 14px;
+      border-radius: 16px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .token span {
+      font-weight: 600;
+    }
+
+    /* NAV */
     .menu {
       position: fixed;
       bottom: 10px;
@@ -86,25 +102,26 @@
       transform: translateX(-50%);
       width: 90%;
       max-width: 420px;
-      background: rgba(20,20,20,0.9);
-      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(20px);
       padding: 12px;
       border-radius: 20px;
       display: flex;
       justify-content: space-around;
       font-size: 13px;
-      border: 1px solid rgba(255,255,255,0.05);
+      border: 1px solid rgba(0,0,0,0.05);
     }
 
     .menu div {
       text-align: center;
-      color: #aaa;
+      color: #333;
     }
 
-    .menu div.active {
-      color: #8b5cf6;
+    .menu .active {
+      color: #b8962e;
       font-weight: 600;
     }
+
   </style>
 </head>
 
@@ -112,18 +129,13 @@
 
 <div class="container">
 
-  <!-- ✅ YOUR REAL LOGO -->
   <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png" />
 
   <h1>HubX Wallet By FastFitHub</h1>
 
-  <button class="btn" onclick="connectWallet()">
-    Connect Wallet
-  </button>
+  <button class="btn" onclick="connectWallet()">Connect Wallet</button>
 
-  <div class="tag">
-    Supports 600+ wallets • Auto detect enabled
-  </div>
+  <div class="tag">Supports 600+ wallets • Auto detect enabled</div>
 
   <div class="card">
     <span>Status</span>
@@ -140,9 +152,29 @@
     <span class="highlight">Active</span>
   </div>
 
+  <!-- TOKENS -->
+  <div class="tokens">
+
+    <div class="token">
+      <span>HUBX</span>
+      <span>120</span>
+    </div>
+
+    <div class="token">
+      <span>DOGE</span>
+      <span>--</span>
+    </div>
+
+    <div class="token">
+      <span>BTC</span>
+      <span>--</span>
+    </div>
+
+  </div>
+
 </div>
 
-<!-- ✅ BOTTOM NAV -->
+<!-- NAV -->
 <div class="menu">
   <div class="active">💼<br>Wallet</div>
   <div>📈<br>Trade</div>
@@ -159,7 +191,6 @@ let provider;
 async function connectWallet() {
   try {
 
-    // ✅ Direct wallet (MetaMask etc.)
     if (window.ethereum) {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts"
@@ -169,14 +200,11 @@ async function connectWallet() {
       return;
     }
 
-    // ✅ WalletConnect fallback
-    if (!provider) {
-      provider = await window.EthereumProvider.init({
-        projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
-        chains: [1],
-        showQrModal: true
-      });
-    }
+    provider = await window.EthereumProvider.init({
+      projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
+      chains: [1],
+      showQrModal: true
+    });
 
     await provider.connect();
 
