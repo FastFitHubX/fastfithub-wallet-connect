@@ -64,8 +64,8 @@
 
 <div class="container">
 
-  <!-- LOGO -->
-  <img src="https://fastfithub.com/about-us" />
+  <!-- ✅ WORKING LOGO (replace later if needed) -->
+  <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_placeholder.png" />
 
   <h1>FastFitHub Wallet</h1>
 
@@ -75,7 +75,7 @@
 
   <div class="card">
     <span>Status</span>
-    <span class="highlight">Not Connected</span>
+    <span class="highlight status">Not Connected</span>
   </div>
 
   <div class="card">
@@ -101,7 +101,9 @@ async function connectWallet() {
     method: "eth_requestAccounts"
   });
 
-  alert("Connected: " + accounts[0]);
+  const short = accounts[0].slice(0,6) + "..." + accounts[0].slice(-4);
+
+  document.querySelector(".status").innerText = short;
 }
 </script>
 
