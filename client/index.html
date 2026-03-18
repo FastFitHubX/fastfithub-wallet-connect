@@ -13,42 +13,47 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
     }
 
     .container {
       width: 92%;
       max-width: 420px;
       text-align: center;
-      animation: fadeUp 0.6s ease;
+      padding: 20px 0;
     }
 
-    @keyframes fadeUp {
-      from {opacity:0; transform:translateY(20px);}
-      to {opacity:1; transform:translateY(0);}
-    }
-
+    /* ✅ FIXED LOGO */
     .logo {
-      font-size: 42px;
-      font-weight: 800;
-      margin-bottom: 10px;
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      margin: 0 auto 10px;
+      display: block;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%,100% {transform: translateY(0);}
+      50% {transform: translateY(-6px);}
     }
 
     h1 {
-      font-size: 18px;
+      font-size: 16px;
       color: #aaa;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
     }
 
     .btn {
       width: 100%;
-      padding: 18px;
-      border-radius: 20px;
+      padding: 16px;
+      border-radius: 18px;
       border: none;
       background: linear-gradient(135deg,#6d5cff,#8b5cf6);
       color: white;
       font-size: 16px;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
+      box-shadow: 0 10px 30px rgba(139,92,246,0.4);
     }
 
     .tag {
@@ -59,11 +64,12 @@
 
     .card {
       background: rgba(255,255,255,0.05);
-      padding: 16px;
-      border-radius: 16px;
+      padding: 14px;
+      border-radius: 14px;
       margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
+      font-size: 14px;
       color: #aaa;
     }
 
@@ -72,14 +78,32 @@
       font-weight: bold;
     }
 
+    /* ✅ PREMIUM BOTTOM NAV */
     .menu {
-      display:flex;
-      justify-content:space-around;
-      margin-top:20px;
-      background:#111;
-      padding:12px;
-      border-radius:20px;
-      font-size:14px;
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 420px;
+      background: rgba(20,20,20,0.9);
+      backdrop-filter: blur(12px);
+      padding: 12px;
+      border-radius: 20px;
+      display: flex;
+      justify-content: space-around;
+      font-size: 13px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .menu div {
+      text-align: center;
+      color: #aaa;
+    }
+
+    .menu div.active {
+      color: #8b5cf6;
+      font-weight: 600;
     }
   </style>
 </head>
@@ -88,8 +112,9 @@
 
 <div class="container">
 
-  <!-- LOGO -->
+  <!-- ✅ YOUR REAL LOGO -->
   <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png" />
+
   <h1>HubX Wallet By FastFitHub</h1>
 
   <button class="btn" onclick="connectWallet()">
@@ -115,14 +140,14 @@
     <span class="highlight">Active</span>
   </div>
 
-  <!-- MENU -->
-  <div class="menu">
-    <div>💼 Wallet</div>
-    <div>📈 Trade</div>
-    <div>💰 Earn</div>
-    <div>📜 History</div>
-  </div>
+</div>
 
+<!-- ✅ BOTTOM NAV -->
+<div class="menu">
+  <div class="active">💼<br>Wallet</div>
+  <div>📈<br>Trade</div>
+  <div>💰<br>Earn</div>
+  <div>📜<br>History</div>
 </div>
 
 <!-- WalletConnect -->
@@ -134,7 +159,7 @@ let provider;
 async function connectWallet() {
   try {
 
-    // ✅ 1. MetaMask / Trust Wallet (mobile direct)
+    // ✅ Direct wallet (MetaMask etc.)
     if (window.ethereum) {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts"
@@ -144,12 +169,7 @@ async function connectWallet() {
       return;
     }
 
-    // ✅ 2. WalletConnect (600+ wallets)
-    if (!window.EthereumProvider) {
-      console.log("WalletConnect not loaded yet");
-      return;
-    }
-
+    // ✅ WalletConnect fallback
     if (!provider) {
       provider = await window.EthereumProvider.init({
         projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
@@ -160,17 +180,14 @@ async function connectWallet() {
 
     await provider.connect();
 
-    const accounts = provider.accounts;
-    updateUI(accounts[0]);
+    updateUI(provider.accounts[0]);
 
   } catch (err) {
-    console.log("ERROR:", err);
+    console.log(err);
   }
 }
 
 function updateUI(address) {
-  if (!address) return;
-
   const short = address.slice(0,6) + "..." + address.slice(-4);
   document.querySelector(".status").innerText = short;
 }
