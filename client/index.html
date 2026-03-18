@@ -27,16 +27,6 @@
       margin-bottom:20px;
     }
 
-    h2 {
-      margin:0;
-      font-size:24px;
-    }
-
-    p {
-      color:#aaa;
-      margin-bottom:30px;
-    }
-
     .btn {
       width:100%;
       padding:16px;
@@ -60,69 +50,73 @@
 <body>
 
 <div class="container">
-
   <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png">
-
   <h2>HubX Wallet</h2>
   <p>Powered by FastFitHub</p>
 
   <button class="btn" id="connectBtn">
     Connect Wallet
   </button>
-
 </div>
 
 <script type="module">
+import { createAppKit } from "https://esm.sh/@reown/appkit@1.7.7";
 import EthereumProvider from "https://esm.sh/@walletconnect/ethereum-provider@2.8.0";
 
-let provider;
+// 🔥 CORE PROVIDER (REAL CONNECTION)
+const provider = await EthereumProvider.init({
+  projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
+  chains: [1],
+  showQrModal: true,
+  metadata: {
+    name: "HubX Wallet",
+    description: "HubX Wallet",
+    url: "https://hubxwallet.vercel.app",
+    icons: ["https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png"]
+  }
+});
 
-async function initProvider() {
-  provider = await EthereumProvider.init({
-    projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
+// 🔥 UI KIT (YOUR MODAL)
+const appKit = createAppKit({
+  projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
+  networks: ["eip155:1"],
+  metadata: {
+    name: "HubX Wallet",
+    description: "HubX Wallet",
+    url: "https://hubxwallet.vercel.app",
+    icons: ["https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png"]
+  }
+});
 
-    chains: [1],
-
-    showQrModal: true,
-
-    metadata: {
-      name: "HubX Wallet",
-      description: "HubX Wallet",
-      url: "https://hubxwallet.vercel.app",
-      icons: ["https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png"]
-    }
-  });
-
-  // 🔥 HANDLE CONNECTION
-  provider.on("connect", (info) => {
-    const address = provider.accounts[0];
-    updateUI(address);
-  });
-
-  // 🔥 HANDLE DISCONNECT
-  provider.on("disconnect", () => {
-    document.getElementById("connectBtn").innerText = "Connect Wallet";
-  });
-}
-
-await initProvider();
-
-// 🔥 CONNECT BUTTON
+// 🔥 BUTTON CLICK
 document.getElementById("connectBtn").onclick = async () => {
   try {
+    // Step 1: open your desired UI
+    await appKit.open();
+
+    // Step 2: trigger real connection
     await provider.connect();
+
   } catch (err) {
     console.error(err);
   }
 };
 
-// 🔥 UI UPDATE
-function updateUI(address) {
-  const btn = document.getElementById("connectBtn");
-  btn.innerText =
+// 🔥 SUCCESS HANDLER
+provider.on("connect", () => {
+  const address = provider.accounts[0];
+
+  document.getElementById("connectBtn").innerText =
+    address.slice(0,6) + "..." + address.slice(-4);
+});
+
+// 🔥 SESSION RESTORE
+if (provider.session) {
+  const address = provider.accounts[0];
+  document.getElementById("connectBtn").innerText =
     address.slice(0,6) + "..." + address.slice(-4);
 }
 </script>
 
 </body>
-</html> 
+</html>
