@@ -6,50 +6,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; }
 
     body {
-      font-family: -apple-system, system-ui;
+      font-family:-apple-system;
       background: radial-gradient(circle at 50% 20%, #1a1a1a, #000 75%);
-      color: white;
+      color:#fff;
 
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      display:flex;
+      justify-content:center;
+      align-items:center;
 
-      min-height: 100vh;
-
-      padding:
-        env(safe-area-inset-top)
-        20px
-        env(safe-area-inset-bottom);
+      min-height:100vh;
+      padding:20px;
     }
 
     .container {
-      width: 100%;
-      max-width: 380px;
-      text-align: center;
-
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
-      gap: 18px;
+      width:100%;
+      max-width:360px;
+      text-align:center;
     }
 
     .logo-wrap {
-      width: 110px;
-      height: 110px;
-      border-radius: 28px;
+      width:110px;
+      height:110px;
+      margin:0 auto 20px;
+      border-radius:28px;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display:flex;
+      justify-content:center;
+      align-items:center;
 
       background: rgba(255,255,255,0.03);
       backdrop-filter: blur(20px);
@@ -57,34 +43,47 @@
       box-shadow: 0 20px 60px rgba(212,175,55,0.15);
     }
 
-    .logo {
-      width: 70px;
-    }
+    .logo { width:70px; }
 
     .title {
-      font-size: 24px;
-      font-weight: 700;
-      text-align: center;
+      font-size:24px;
+      font-weight:700;
+      margin-bottom:6px;
     }
 
     .powered {
-      font-size: 13px;
-      color: #9a9a9a;
-      margin-top: -6px;
+      font-size:13px;
+      color:#9a9a9a;
+      margin-bottom:30px;
     }
 
-    /* 🔥 BUTTON STYLING */
-    w3m-button {
-      margin-top: 20px;
+    /* 🔥 YOUR PREMIUM BUTTON */
+    .btn {
+      width:100%;
+      padding:16px;
+      border-radius:30px;
+      border:none;
 
-      --w3m-accent: #d4af37;
-      --w3m-border-radius-master: 30px;
-      --w3m-font-family: -apple-system;
+      font-size:16px;
+      font-weight:600;
 
-      width: 100%;
-      max-width: 320px;
+      color:white;
+
+      background: linear-gradient(120deg,#d4af37,#000,#d4af37);
+      background-size:200% 100%;
+      animation:shine 4s linear infinite;
+
+      box-shadow:0 10px 30px rgba(212,175,55,0.25);
     }
 
+    @keyframes shine {
+      0% { background-position:0% }
+      100% { background-position:200% }
+    }
+
+    .btn:active {
+      transform:scale(0.96);
+    }
   </style>
 </head>
 
@@ -99,12 +98,11 @@
   <div class="title">HubX Wallet</div>
   <div class="powered">Powered by FastFitHub</div>
 
-  <!-- 🔥 CLEAN CONNECT BUTTON -->
-  <w3m-button />
+  <!-- 🔥 YOUR BUTTON -->
+  <button class="btn" onclick="openWallet()">Connect Wallet</button>
 
 </div>
 
-<!-- 🔥 REOWN SDK -->
 <script type="module">
 import { createAppKit } from "https://esm.sh/@reown/appkit";
 import { WagmiAdapter } from "https://esm.sh/@reown/appkit-adapter-wagmi";
@@ -117,11 +115,10 @@ const wagmiAdapter = new WagmiAdapter({
   networks: [mainnet]
 });
 
-createAppKit({
+const appKit = createAppKit({
   adapters: [wagmiAdapter],
   projectId,
   networks: [mainnet],
-
   metadata: {
     name: "HubX Wallet",
     description: "FastFitHub Web3 Wallet",
@@ -129,6 +126,11 @@ createAppKit({
     icons: ["https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png"]
   }
 });
+
+// 🔥 MANUAL TRIGGER
+window.openWallet = () => {
+  appKit.open();
+};
 </script>
 
 </body>
