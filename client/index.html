@@ -104,25 +104,24 @@ async function connectWallet() {
     btn.innerText = "Connecting...";
     btn.disabled = true;
 
-    // 🔥 STEP 1: TRY METAMASK / TRUST (INJECTED)
-    if (window.ethereum) {
-      const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts"
-      });
+    // 🔥 CHECK IF WALLET EXISTS
+    if (!window.ethereum) {
 
-      const address = accounts[0];
-
-      btn.innerText =
-        address.slice(0,6) + "..." + address.slice(-4);
+      // 👉 REDIRECT STRATEGY
+      window.location.href =
+        "https://metamask.app.link/dapp/" + window.location.host;
 
       return;
     }
 
-    // 🔥 STEP 2: FALLBACK (NO WALLET)
-    alert("Open this in MetaMask or Trust Wallet browser");
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts"
+    });
 
-    btn.innerText = "Connect Wallet";
-    btn.disabled = false;
+    const address = accounts[0];
+
+    btn.innerText =
+      address.slice(0,6) + "..." + address.slice(-4);
 
   } catch (err) {
     console.error(err);
