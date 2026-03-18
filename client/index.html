@@ -5,210 +5,75 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-    bodybody {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont;
-  background: radial-gradient(circle at 50% 20%, #1a1a1a, #000 70%);
-  color: white;
+    body {
+      margin: 0;
+      font-family: -apple-system;
+      background: radial-gradient(circle at top, #1a1a1a, #000);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    .container {
+      text-align: center;
+      width: 90%;
+      max-width: 420px;
+    }
 
-  min-height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
-}
+    /* 🔥 LOGO BLEND EFFECT */
+    .logo-wrap {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 15px;
+      border-radius: 30px;
 
-/* CONTAINER */
-.container {
-  width: 100%;
-  max-width: 380px;
-  text-align: center;
-}
+      background: radial-gradient(circle, rgba(212,175,55,0.25), transparent 70%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-/* 🔥 LOGO (NO BOX — PURE BLEND) */
-.logo-wrap {
-  width: 110px;
-  height: 110px;
-  margin: 0 auto 18px;
+      box-shadow: 0 20px 60px rgba(212,175,55,0.15);
+    }
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    .logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 20px;
+    }
 
-  background: radial-gradient(circle, rgba(212,175,55,0.22), transparent 75%);
-  border-radius: 50%;
+    .title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-top: 10px;
+    }
 
-  animation: pulseGlow 3s ease-in-out infinite;
-}
+    .powered {
+      font-size: 13px;
+      color: #aaa;
+      margin-bottom: 30px;
+    }
 
-@keyframes pulseGlow {
-  0% { filter: blur(0px); opacity: 0.8; }
-  50% { filter: blur(2px); opacity: 1; }
-  100% { filter: blur(0px); opacity: 0.8; }
-}
+    /* BUTTON */
+    .btn {
+      width: 100%;
+      padding: 18px;
+      border-radius: 30px;
+      border: none;
+      background: linear-gradient(135deg,#d4af37,#000);
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
 
-.logo {
-  width: 70px;
-  height: 70px;
-  object-fit: contain;
-}
+      box-shadow: 0 15px 40px rgba(212,175,55,0.25);
+      transition: 0.2s;
+    }
 
-/* TEXT */
-.title {
-  font-size: 22px;
-  font-weight: 700;
-  margin-top: 6px;
-}
-
-.powered {
-  font-size: 13px;
-  color: #aaa;
-  margin-bottom: 32px;
-}
-
-/* 🔥 BUTTON (OPTIMIZED SIZE) */
-.btn {
-  width: 100%;
-  padding: 14px; /* reduced from bulky */
-  border-radius: 30px;
-  border: none;
-
-  font-size: 15px;
-  font-weight: 600;
-  color: white;
-
-  background: linear-gradient(120deg,#d4af37,#000,#d4af37);
-  background-size: 200% 100%;
-  animation: shine 4s linear infinite;
-
-  box-shadow: 0 12px 35px rgba(212,175,55,0.25);
-}
-
-@keyframes shine {
-  0% { background-position: 0% }
-  100% { background-position: 200% }
-}
-
-.btn:active {
-  transform: scale(0.97);
-}
-
-/* 🔥 DEPTH LAYERS */
-body::before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 35%;
-  top: 0;
-  background: radial-gradient(circle, rgba(212,175,55,0.08), transparent 70%);
-}
-
-body::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 40%;
-  bottom: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
-}
-
-  /* ❌ REMOVE BACKGROUND BOX */
-  background: none;
-
-  /* ✅ SOFT GOLD GLOW ONLY */
-  filter: drop-shadow(0 0 25px rgba(212,175,55,0.25))
-          drop-shadow(0 0 60px rgba(212,175,55,0.12));
-
-  animation: floatGlow 3s ease-in-out infinite;
-}
-
-/* 🔥 SUBTLE FLOAT EFFECT */
-@keyframes floatGlow {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
-  100% { transform: translateY(0px); }
-}
-
-.logo {
-  width: 70px;
-  height: 70px;
-  object-fit: contain;
-
-  /* ✅ CLEAN — NO BACKGROUND */
-  background: transparent;
-  border-radius: 0;
-}
-
-@keyframes pulseGlow {
-  0% { box-shadow: 0 0 40px rgba(212,175,55,0.1); }
-  50% { box-shadow: 0 0 90px rgba(212,175,55,0.35); }
-  100% { box-shadow: 0 0 40px rgba(212,175,55,0.1); }
-}
-
-.logo {
-  width: 85px;
-  border-radius: 20px;
-}
-
-/* TEXT */
-.title {
-  font-size: 24px;
-  font-weight: 700;
-}
-
-.powered {
-  font-size: 13px;
-  color: #aaa;
-  margin-bottom: 40px;
-}
-
-/* 🔥 BUTTON WITH LIGHT SWEEP */
-.btn {
-  width: 100%;
-  padding: 18px;
-  border-radius: 40px;
-  border: none;
-  font-size: 16px;
-  font-weight: 600;
-  color: white;
-
-  background: linear-gradient(120deg,#d4af37,#000,#d4af37);
-  background-size: 200% 100%;
-
-  animation: shine 4s linear infinite;
-
-  box-shadow: 0 20px 60px rgba(212,175,55,0.25);
-}
-
-@keyframes shine {
-  0% { background-position: 0% }
-  100% { background-position: 200% }
-}
-
-.btn:active {
-  transform: scale(0.96);
-}
-
-/* 🔥 DEPTH OVERLAY */
-body::before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 40%;
-  top: 0;
-  background: radial-gradient(circle, rgba(212,175,55,0.08), transparent 70%);
-}
-
-body::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 40%;
-  bottom: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-}
+    .btn:active {
+      transform: scale(0.96);
+    }
 
   </style>
 </head>
