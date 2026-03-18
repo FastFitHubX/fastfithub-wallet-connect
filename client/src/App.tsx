@@ -1,3 +1,6 @@
+import './config/appkit'
+import { AppKitButton } from '@reown/appkit/react'
+
 import { useAccount, useBalance } from 'wagmi'
 import { dogeosTestnet } from './config/wallet'
 
