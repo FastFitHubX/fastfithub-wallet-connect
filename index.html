@@ -2,7 +2,7 @@
   <h1>FastFitHub Wallet 🚀</h1>
 
   <button onclick="connectWallet()" 
-    style="padding:12px 20px;border-radius:10px;background:#facc15;border:none;font-weight:bold">
+    style="padding:14px 22px;border-radius:12px;background:#facc15;border:none;font-weight:bold;margin-top:20px">
     Connect Wallet
   </button>
 
@@ -11,14 +11,20 @@
 
 <script>
   async function connectWallet() {
-    if (window.ethereum) {
-      const accounts = await window.ethereum.request({
-        method: 'eth_requestAccounts'
-      })
-      document.getElementById("address").innerText =
-        "Connected: " + accounts[0]
-    } else {
-      alert("Install MetaMask")
+    try {
+      if (window.ethereum) {
+        const accounts = await window.ethereum.request({
+          method: 'eth_requestAccounts'
+        })
+
+        document.getElementById("address").innerText =
+          "Connected: " + accounts[0]
+
+      } else {
+        alert("No wallet found. Open in MetaMask browser.")
+      }
+    } catch (err) {
+      alert("Connection failed")
     }
   }
 </script>
