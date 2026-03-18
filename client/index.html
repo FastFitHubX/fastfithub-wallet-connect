@@ -1,41 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>HubX Wallet By FastFitHub</title>
+  <title>HubX Wallet</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
       margin: 0;
-      background: linear-gradient(180deg, #ffffff, #f5f5f5);
+      background: #f5f5f7;
       font-family: -apple-system;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
     }
 
     .container {
-      width: 92%;
+      padding: 20px;
       max-width: 420px;
+      margin: auto;
+    }
+
+    /* HEADER */
+    .header {
       text-align: center;
-    }
-
-    /* LOGO */
-    .logo {
-      width: 90px;
-      height: 90px;
-      object-fit: contain;
-      margin-bottom: 10px;
-    }
-
-    h1 {
-      font-size: 16px;
-      color: #111;
       margin-bottom: 20px;
     }
 
-    /* BUTTON */
+    .logo {
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+
+    .powered {
+      font-size: 12px;
+      color: #888;
+    }
+
+    /* BALANCE */
+    .balance {
+      text-align: center;
+      margin: 25px 0;
+    }
+
+    .balance h2 {
+      font-size: 32px;
+      margin: 0;
+    }
+
+    /* ACTIONS */
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .action {
+      background: white;
+      border-radius: 16px;
+      padding: 12px;
+      width: 22%;
+      text-align: center;
+      font-size: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+
+    /* TOKENS */
+    .tokens {
+      background: white;
+      border-radius: 20px;
+      padding: 10px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+
+    .token {
+      display: flex;
+      justify-content: space-between;
+      padding: 14px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .token:last-child {
+      border-bottom: none;
+    }
+
+    .token-name {
+      font-weight: 600;
+    }
+
+    /* CONNECT BUTTON */
     .btn {
       width: 100%;
       padding: 16px;
@@ -44,54 +100,7 @@
       background: linear-gradient(135deg,#d4af37,#000);
       color: white;
       font-size: 16px;
-      margin-bottom: 10px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-    }
-
-    .tag {
-      color: #666;
-      font-size: 12px;
-      margin-bottom: 20px;
-    }
-
-    /* GLASS CARD */
-    .card {
-      background: rgba(255,255,255,0.6);
-      backdrop-filter: blur(20px);
-      padding: 14px;
-      border-radius: 16px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 14px;
-      color: #333;
-      border: 1px solid rgba(0,0,0,0.05);
-    }
-
-    .highlight {
-      color: #b8962e;
-      font-weight: 600;
-    }
-
-    /* TOKENS */
-    .tokens {
-      margin-top: 15px;
-    }
-
-    .token {
-      background: rgba(255,255,255,0.6);
-      backdrop-filter: blur(20px);
-      padding: 14px;
-      border-radius: 16px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border: 1px solid rgba(0,0,0,0.05);
-    }
-
-    .token span {
-      font-weight: 600;
+      margin-top: 20px;
     }
 
     /* NAV */
@@ -102,19 +111,18 @@
       transform: translateX(-50%);
       width: 90%;
       max-width: 420px;
-      background: rgba(255,255,255,0.7);
-      backdrop-filter: blur(20px);
+      background: white;
       padding: 12px;
       border-radius: 20px;
       display: flex;
       justify-content: space-around;
-      font-size: 13px;
-      border: 1px solid rgba(0,0,0,0.05);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
     }
 
     .menu div {
+      font-size: 12px;
       text-align: center;
-      color: #333;
+      color: #666;
     }
 
     .menu .active {
@@ -129,78 +137,83 @@
 
 <div class="container">
 
-  <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png" />
-
-  <h1>HubX Wallet By FastFitHub</h1>
-
-  <button class="btn" onclick="connectWallet()">Connect Wallet</button>
-
-  <div class="tag">Supports 600+ wallets • Auto detect enabled</div>
-
-  <div class="card">
-    <span>Status</span>
-    <span class="highlight status">Not Connected</span>
+  <!-- HEADER -->
+  <div class="header">
+    <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png" />
+    <div class="title">HubX Wallet</div>
+    <div class="powered">Powered by FastFitHub</div>
   </div>
 
-  <div class="card">
-    <span>Membership</span>
-    <span class="highlight">Elite</span>
+  <!-- BALANCE -->
+  <div class="balance">
+    <div>Balance</div>
+    <h2>₹0.00</h2>
   </div>
 
-  <div class="card">
-    <span>Rewards Engine</span>
-    <span class="highlight">Active</span>
+  <!-- ACTIONS -->
+  <div class="actions">
+    <div class="action">Transfer</div>
+    <div class="action">Deposit</div>
+    <div class="action">Withdraw</div>
+    <div class="action">Exchange</div>
   </div>
 
   <!-- TOKENS -->
   <div class="tokens">
 
     <div class="token">
-      <span>HUBX</span>
-      <span>120</span>
+      <div>
+        <div class="token-name">HUBX</div>
+        <div>Fitness Token</div>
+      </div>
+      <div>120</div>
     </div>
 
     <div class="token">
-      <span>DOGE</span>
-      <span>--</span>
+      <div>
+        <div class="token-name">Dogecoin</div>
+        <div>DOGE</div>
+      </div>
+      <div>--</div>
     </div>
 
     <div class="token">
-      <span>BTC</span>
-      <span>--</span>
+      <div>
+        <div class="token-name">Bitcoin</div>
+        <div>BTC</div>
+      </div>
+      <div>--</div>
     </div>
 
   </div>
+
+  <!-- CONNECT -->
+  <button class="btn" onclick="connectWallet()">Connect Wallet</button>
 
 </div>
 
 <!-- NAV -->
 <div class="menu">
-  <div class="active">💼<br>Wallet</div>
-  <div>📈<br>Trade</div>
-  <div>💰<br>Earn</div>
-  <div>📜<br>History</div>
+  <div class="active">Wallet</div>
+  <div>Trade</div>
+  <div>Earn</div>
+  <div>History</div>
 </div>
 
 <!-- WalletConnect -->
 <script src="https://unpkg.com/@walletconnect/ethereum-provider@2.8.0/dist/index.umd.min.js"></script>
 
 <script>
-let provider;
-
 async function connectWallet() {
   try {
 
     if (window.ethereum) {
-      const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts"
-      });
-
-      updateUI(accounts[0]);
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      alert("Wallet Connected");
       return;
     }
 
-    provider = await window.EthereumProvider.init({
+    const provider = await window.EthereumProvider.init({
       projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
       chains: [1],
       showQrModal: true
@@ -208,16 +221,9 @@ async function connectWallet() {
 
     await provider.connect();
 
-    updateUI(provider.accounts[0]);
-
-  } catch (err) {
-    console.log(err);
+  } catch (e) {
+    console.log(e);
   }
-}
-
-function updateUI(address) {
-  const short = address.slice(0,6) + "..." + address.slice(-4);
-  document.querySelector(".status").innerText = short;
 }
 </script>
 
