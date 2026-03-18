@@ -20,10 +20,16 @@
       width: 92%;
       max-width: 420px;
       text-align: center;
+      animation: fadeUp 0.6s ease;
+    }
+
+    @keyframes fadeUp {
+      from {opacity:0; transform:translateY(20px);}
+      to {opacity:1; transform:translateY(0);}
     }
 
     .logo {
-      font-size: 40px;
+      font-size: 42px;
       font-weight: 800;
       margin-bottom: 10px;
     }
@@ -42,6 +48,12 @@
       background: linear-gradient(135deg,#6d5cff,#8b5cf6);
       color: white;
       font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    .tag {
+      color: #777;
+      font-size: 12px;
       margin-bottom: 20px;
     }
 
@@ -59,6 +71,16 @@
       color: #facc15;
       font-weight: bold;
     }
+
+    .menu {
+      display:flex;
+      justify-content:space-around;
+      margin-top:20px;
+      background:#111;
+      padding:12px;
+      border-radius:20px;
+      font-size:14px;
+    }
   </style>
 </head>
 
@@ -66,7 +88,7 @@
 
 <div class="container">
 
-  <!-- ✅ TEMP LOGO FIX -->
+  <!-- LOGO -->
   <div class="logo">FF</div>
 
   <h1>HubX Wallet By FastFitHub</h1>
@@ -74,6 +96,10 @@
   <button class="btn" onclick="connectWallet()">
     Connect Wallet
   </button>
+
+  <div class="tag">
+    Supports 600+ wallets • Auto detect enabled
+  </div>
 
   <div class="card">
     <span>Status</span>
@@ -90,48 +116,64 @@
     <span class="highlight">Active</span>
   </div>
 
+  <!-- MENU -->
+  <div class="menu">
+    <div>💼 Wallet</div>
+    <div>📈 Trade</div>
+    <div>💰 Earn</div>
+    <div>📜 History</div>
+  </div>
+
 </div>
 
+<!-- WalletConnect -->
 <script src="https://unpkg.com/@walletconnect/ethereum-provider@2.8.0/dist/index.umd.min.js"></script>
 
 <script>
+let provider;
+
 async function connectWallet() {
   try {
 
-    // 🔥 MOBILE FIX (MetaMask / Trust Wallet)
+    // ✅ 1. MetaMask / Trust Wallet (mobile direct)
     if (window.ethereum) {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts"
       });
 
-      const short = accounts[0].slice(0,6) + "..." + accounts[0].slice(-4);
-      document.querySelector(".status").innerText = short;
+      updateUI(accounts[0]);
       return;
     }
 
-    // 🔥 WalletConnect fallback (600 wallets)
+    // ✅ 2. WalletConnect (600+ wallets)
     if (!window.EthereumProvider) {
-      alert("Refresh page");
+      console.log("WalletConnect not loaded yet");
       return;
     }
 
-    const provider = await window.EthereumProvider.init({
-      projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
-      chains: [1],
-      showQrModal: true
-    });
+    if (!provider) {
+      provider = await window.EthereumProvider.init({
+        projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
+        chains: [1],
+        showQrModal: true
+      });
+    }
 
-    await provider.enable();
+    await provider.connect();
 
-    const acc = provider.accounts[0];
-    const short = acc.slice(0,6) + "..." + acc.slice(-4);
+    const accounts = provider.accounts;
+    updateUI(accounts[0]);
 
-    document.querySelector(".status").innerText = short;
-
-  } catch (e) {
-    console.log(e);
-    alert("Connection failed");
+  } catch (err) {
+    console.log("ERROR:", err);
   }
+}
+
+function updateUI(address) {
+  if (!address) return;
+
+  const short = address.slice(0,6) + "..." + address.slice(-4);
+  document.querySelector(".status").innerText = short;
 }
 </script>
 
