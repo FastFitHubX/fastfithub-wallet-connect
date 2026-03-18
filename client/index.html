@@ -15,83 +15,25 @@
       padding: 20px;
       max-width: 420px;
       margin: auto;
-    }
-
-    /* HEADER */
-    .header {
       text-align: center;
-      margin-bottom: 20px;
     }
 
     .logo {
-      width: 70px;
-      height: 70px;
-      object-fit: contain;
+      width: 80px;
+      margin-bottom: 10px;
     }
 
     .title {
       font-size: 20px;
       font-weight: 700;
-      margin-top: 10px;
     }
 
     .powered {
       font-size: 12px;
       color: #888;
+      margin-bottom: 30px;
     }
 
-    /* BALANCE */
-    .balance {
-      text-align: center;
-      margin: 25px 0;
-    }
-
-    .balance h2 {
-      font-size: 32px;
-      margin: 0;
-    }
-
-    /* ACTIONS */
-    .actions {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-
-    .action {
-      background: white;
-      border-radius: 16px;
-      padding: 12px;
-      width: 22%;
-      text-align: center;
-      font-size: 12px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-    }
-
-    /* TOKENS */
-    .tokens {
-      background: white;
-      border-radius: 20px;
-      padding: 10px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-    }
-
-    .token {
-      display: flex;
-      justify-content: space-between;
-      padding: 14px;
-      border-bottom: 1px solid #eee;
-    }
-
-    .token:last-child {
-      border-bottom: none;
-    }
-
-    .token-name {
-      font-weight: 600;
-    }
-
-    /* CONNECT BUTTON */
     .btn {
       width: 100%;
       padding: 16px;
@@ -100,34 +42,30 @@
       background: linear-gradient(135deg,#d4af37,#000);
       color: white;
       font-size: 16px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Glass UI */
+    .glass {
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 15px;
       margin-top: 20px;
     }
 
-    /* NAV */
-    .menu {
-      position: fixed;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 420px;
-      background: white;
-      padding: 12px;
-      border-radius: 20px;
+    .token {
       display: flex;
-      justify-content: space-around;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
     }
 
-    .menu div {
-      font-size: 12px;
-      text-align: center;
-      color: #666;
-    }
-
-    .menu .active {
-      color: #b8962e;
-      font-weight: 600;
+    .token:last-child {
+      border-bottom: none;
     }
 
   </style>
@@ -138,88 +76,75 @@
 <div class="container">
 
   <!-- HEADER -->
-  <div class="header">
-    <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png" />
-    <div class="title">HubX Wallet</div>
-    <div class="powered">Powered by FastFitHub</div>
-  </div>
-
-  <!-- BALANCE -->
-  <div class="balance">
-    <div>Balance</div>
-    <h2>₹0.00</h2>
-  </div>
-
-  <!-- ACTIONS -->
-  <div class="actions">
-    <div class="action">Transfer</div>
-    <div class="action">Deposit</div>
-    <div class="action">Withdraw</div>
-    <div class="action">Exchange</div>
-  </div>
-
-  <!-- TOKENS -->
-  <div class="tokens">
-
-    <div class="token">
-      <div>
-        <div class="token-name">HUBX</div>
-        <div>Fitness Token</div>
-      </div>
-      <div>120</div>
-    </div>
-
-    <div class="token">
-      <div>
-        <div class="token-name">Dogecoin</div>
-        <div>DOGE</div>
-      </div>
-      <div>--</div>
-    </div>
-
-    <div class="token">
-      <div>
-        <div class="token-name">Bitcoin</div>
-        <div>BTC</div>
-      </div>
-      <div>--</div>
-    </div>
-
-  </div>
+  <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png">
+  <div class="title">HubX Wallet</div>
+  <div class="powered">Powered by FastFitHub</div>
 
   <!-- CONNECT -->
   <button class="btn" onclick="connectWallet()">Connect Wallet</button>
 
+  <!-- WALLET DATA (HIDDEN INITIALLY) -->
+  <div id="walletUI" class="hidden">
+
+    <div class="glass">
+      <div><b>Address:</b> <span id="address"></span></div>
+    </div>
+
+    <div class="glass">
+
+      <div class="token">
+        <span>HUBX</span>
+        <span id="hubx">120</span>
+      </div>
+
+      <div class="token">
+        <span>Dogecoin</span>
+        <span id="doge">--</span>
+      </div>
+
+      <div class="token">
+        <span>Bitcoin</span>
+        <span id="btc">--</span>
+      </div>
+
+    </div>
+
+  </div>
+
 </div>
 
-<!-- NAV -->
-<div class="menu">
-  <div class="active">Wallet</div>
-  <div>Trade</div>
-  <div>Earn</div>
-  <div>History</div>
-</div>
-
-<!-- WalletConnect -->
 <script src="https://unpkg.com/@walletconnect/ethereum-provider@2.8.0/dist/index.umd.min.js"></script>
 
 <script>
 async function connectWallet() {
   try {
 
+    let account;
+
     if (window.ethereum) {
-      await window.ethereum.request({ method: "eth_requestAccounts" });
-      alert("Wallet Connected");
-      return;
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts"
+      });
+      account = accounts[0];
+    } else {
+      const provider = await window.EthereumProvider.init({
+        projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
+        chains: [1],
+        showQrModal: true
+      });
+
+      await provider.connect();
+      account = provider.accounts[0];
     }
 
-    const provider = await window.EthereumProvider.init({
-      projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
-      chains: [1],
-      showQrModal: true
-    });
+    // ✅ SHOW UI AFTER CONNECT
+    document.getElementById("walletUI").classList.remove("hidden");
 
-    await provider.connect();
+    // ✅ SET ADDRESS
+    document.getElementById("address").innerText =
+      account.slice(0,6) + "..." + account.slice(-4);
+
+    // 🔥 (NEXT STEP YOU WILL ADD REAL BALANCE HERE)
 
   } catch (e) {
     console.log(e);
