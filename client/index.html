@@ -2,7 +2,6 @@
 <html>
 <head>
   <title>HubX Wallet By FastFitHub</title>
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -10,37 +9,23 @@
       margin: 0;
       background: radial-gradient(circle at top, #0f0f10, #000);
       color: white;
-      font-family: -apple-system, BlinkMacSystemFont;
+      font-family: -apple-system;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      overflow: hidden;
     }
 
     .container {
       width: 92%;
       max-width: 420px;
       text-align: center;
-      animation: fadeUp 0.8s ease;
-    }
-
-    @keyframes fadeUp {
-      from {opacity:0; transform:translateY(30px);}
-      to {opacity:1; transform:translateY(0);}
     }
 
     .logo {
-      width: 90px;
-      height: 90px;
-      border-radius: 20px;
-      margin-bottom: 15px;
-      animation: float 3s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%,100% {transform: translateY(0);}
-      50% {transform: translateY(-8px);}
+      font-size: 40px;
+      font-weight: 800;
+      margin-bottom: 10px;
     }
 
     h1 {
@@ -57,38 +42,22 @@
       background: linear-gradient(135deg,#6d5cff,#8b5cf6);
       color: white;
       font-size: 16px;
-      font-weight: 600;
       margin-bottom: 20px;
-      box-shadow: 0 10px 40px rgba(139,92,246,0.4);
-      transition: 0.2s;
-    }
-
-    .btn:active {
-      transform: scale(0.96);
-    }
-
-    .wallet-tag {
-      font-size: 12px;
-      color: #888;
-      margin-bottom: 25px;
     }
 
     .card {
-      background: rgba(255,255,255,0.04);
-      backdrop-filter: blur(12px);
-      padding: 18px;
-      border-radius: 18px;
-      margin-bottom: 12px;
+      background: rgba(255,255,255,0.05);
+      padding: 16px;
+      border-radius: 16px;
+      margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
-      font-size: 14px;
-      color: #888;
-      border: 1px solid rgba(255,255,255,0.05);
+      color: #aaa;
     }
 
     .highlight {
       color: #facc15;
-      font-weight: 600;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -97,18 +66,14 @@
 
 <div class="container">
 
-  <!-- ✅ REAL LOGO (CHANGE THIS LINK) -->
-  <img class="logo" src="https://raw.githubusercontent.com/FastFitHubX/fastfithub-wallet-connect/main/logo.png" />
+  <!-- ✅ TEMP LOGO FIX -->
+  <div class="logo">FF</div>
 
   <h1>HubX Wallet By FastFitHub</h1>
 
   <button class="btn" onclick="connectWallet()">
     Connect Wallet
   </button>
-
-  <div class="wallet-tag">
-    Supports 600+ wallets • Auto detect enabled
-  </div>
 
   <div class="card">
     <span>Status</span>
@@ -127,12 +92,29 @@
 
 </div>
 
-<!-- WalletConnect -->
 <script src="https://unpkg.com/@walletconnect/ethereum-provider@2.8.0/dist/index.umd.min.js"></script>
 
 <script>
 async function connectWallet() {
   try {
+
+    // 🔥 MOBILE FIX (MetaMask / Trust Wallet)
+    if (window.ethereum) {
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts"
+      });
+
+      const short = accounts[0].slice(0,6) + "..." + accounts[0].slice(-4);
+      document.querySelector(".status").innerText = short;
+      return;
+    }
+
+    // 🔥 WalletConnect fallback (600 wallets)
+    if (!window.EthereumProvider) {
+      alert("Refresh page");
+      return;
+    }
+
     const provider = await window.EthereumProvider.init({
       projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
       chains: [1],
@@ -148,7 +130,7 @@ async function connectWallet() {
 
   } catch (e) {
     console.log(e);
-    alert("Wallet connection failed");
+    alert("Connection failed");
   }
 }
 </script>
