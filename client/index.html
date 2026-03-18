@@ -111,13 +111,19 @@ window.connectWallet = async function () {
   const btn = document.querySelector(".btn");
 
   try {
-    btn.innerText = "Connecting...";
+    btn.innerText = "Opening Wallet...";
     btn.disabled = true;
 
     provider = await EthereumProvider.init({
       projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
+
       chains: [1],
+
+      // 🔥 FORCE MODAL (important)
       showQrModal: true,
+
+      // 🔥 BETTER MOBILE UX
+      optionalChains: [1],
     });
 
     await provider.connect();
@@ -129,9 +135,11 @@ window.connectWallet = async function () {
 
   } catch (err) {
     console.error(err);
+
     btn.innerText = "Connect Wallet";
     btn.disabled = false;
-    alert("Connection failed");
+
+    alert("No wallet detected. Install Trust Wallet / MetaMask.");
   }
 };
 </script>
