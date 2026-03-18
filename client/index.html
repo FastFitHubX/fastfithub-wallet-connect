@@ -2,13 +2,13 @@
 <html>
 <head>
   <title>HubX Wallet</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
   <style>
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont;
-      background: radial-gradient(circle at 50% 20%, #1a1a1a, #000 70%);
+      background: radial-gradient(circle at 50% 25%, #1a1a1a, #000 75%);
       color: white;
 
       display: flex;
@@ -16,7 +16,7 @@
       align-items: center;
 
       min-height: 100vh;
-      padding: 20px;
+      padding: env(safe-area-inset-top) 20px env(safe-area-inset-bottom);
       box-sizing: border-box;
     }
 
@@ -26,57 +26,64 @@
       text-align: center;
     }
 
-    /* LOGO */
+    /* 🔥 LOGO (BALANCED + CLEAN) */
     .logo-wrap {
-      width: 120px;
-      height: 120px;
-      margin: 0 auto 18px;
-      border-radius: 30px;
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 20px;
 
-      background: rgba(255,255,255,0.03);
-      backdrop-filter: blur(20px);
+      border-radius: 28px;
 
       display: flex;
       justify-content: center;
       align-items: center;
 
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(20px);
+
       box-shadow:
-        0 20px 60px rgba(212,175,55,0.15),
-        inset 0 0 20px rgba(255,255,255,0.05);
+        0 20px 50px rgba(212,175,55,0.12),
+        inset 0 0 15px rgba(255,255,255,0.04);
     }
 
     .logo {
-      width: 75px;
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
     }
 
+    /* TEXT */
     .title {
       font-size: 24px;
       font-weight: 700;
+      letter-spacing: -0.3px;
+      margin-bottom: 6px;
     }
 
     .powered {
       font-size: 13px;
-      color: #aaa;
-      margin-bottom: 25px;
+      color: #9a9a9a;
+      margin-bottom: 32px;
     }
 
-    /* BUTTON */
+    /* 🔥 BUTTON (PERFECT MOBILE SIZE) */
     .btn {
       width: 100%;
-      padding: 14px;
-      border-radius: 30px;
+      padding: 15px;
+      border-radius: 32px;
       border: none;
 
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 600;
+      letter-spacing: 0.2px;
+
       color: white;
 
       background: linear-gradient(120deg,#d4af37,#000,#d4af37);
       background-size: 200% 100%;
       animation: shine 4s linear infinite;
 
-      box-shadow: 0 12px 35px rgba(212,175,55,0.25);
-      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(212,175,55,0.25);
     }
 
     @keyframes shine {
@@ -84,72 +91,27 @@
       100% { background-position: 200% }
     }
 
-    /* ACTION CARDS */
-    .actions {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 40px;
+    .btn:active {
+      transform: scale(0.97);
     }
 
-    .action {
-      flex: 1;
-      padding: 18px;
-      border-radius: 20px;
-
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(20px);
-
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-
-      font-size: 13px;
-      color: #ddd;
+    /* DEPTH */
+    body::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 40%;
+      top: 0;
+      background: radial-gradient(circle, rgba(212,175,55,0.06), transparent 70%);
     }
 
-    .icon {
-      font-size: 22px;
-    }
-
-    /* 🔥 BOTTOM NAV (LIKE YOUR REFERENCE) */
-    .bottom-nav {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 420px;
-
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(30px);
-
-      border-radius: 40px;
-      padding: 8px;
-
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .nav-item {
-      flex: 1;
-      text-align: center;
-      padding: 10px 0;
-      border-radius: 30px;
-      font-size: 12px;
-      color: #aaa;
-    }
-
-    .nav-item.active {
-      background: rgba(255,255,255,0.15);
-      color: #fff;
-      font-weight: 600;
-    }
-
-    .nav-icon {
-      display: block;
-      font-size: 18px;
-      margin-bottom: 2px;
+    body::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 45%;
+      bottom: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
     }
 
   </style>
@@ -168,76 +130,9 @@
   <div class="powered">Powered by FastFitHub</div>
 
   <!-- CONNECT -->
-  <button class="btn" onclick="connectWallet()">Connect Wallet</button>
-
-  <!-- ACTIONS -->
-  <div class="actions">
-    <div class="action">
-      <div class="icon">🔄</div>
-      <span>Swap</span>
-    </div>
-
-    <div class="action">
-      <div class="icon">📈</div>
-      <span>Trade</span>
-    </div>
-
-    <div class="action">
-      <div class="icon">💳</div>
-      <span>Buy</span>
-    </div>
-  </div>
+  <button class="btn">Connect Wallet</button>
 
 </div>
-
-<!-- 🔥 BOTTOM NAV -->
-<div class="bottom-nav">
-
-  <div class="nav-item active">
-    <span class="nav-icon">💼</span>
-    Wallet
-  </div>
-
-  <div class="nav-item">
-    <span class="nav-icon">📊</span>
-    Trade
-  </div>
-
-  <div class="nav-item">
-    <span class="nav-icon">💰</span>
-    Earn
-  </div>
-
-  <div class="nav-item">
-    <span class="nav-icon">📜</span>
-    History
-  </div>
-
-</div>
-
-<script src="https://unpkg.com/@walletconnect/ethereum-provider@2.8.0/dist/index.umd.min.js"></script>
-
-<script>
-async function connectWallet() {
-  try {
-    if (window.ethereum) {
-      await window.ethereum.request({ method: "eth_requestAccounts" });
-      alert("Wallet Connected");
-    } else {
-      const provider = await window.EthereumProvider.init({
-        projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
-        chains: [1],
-        showQrModal: true
-      });
-
-      await provider.connect();
-      alert("Wallet Connected");
-    }
-  } catch (e) {
-    console.log(e);
-  }
-}
-</script>
 
 </body>
 </html>
