@@ -7,7 +7,7 @@
   <style>
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont;
+      font-family: -apple-system;
       background: radial-gradient(circle at 50% 25%, #1a1a1a, #000 75%);
       color: white;
 
@@ -17,7 +17,6 @@
 
       min-height: 100vh;
       padding: env(safe-area-inset-top) 20px env(safe-area-inset-bottom);
-      box-sizing: border-box;
     }
 
     .container {
@@ -26,12 +25,10 @@
       text-align: center;
     }
 
-    /* 🔥 LOGO (BALANCED + CLEAN) */
     .logo-wrap {
       width: 110px;
       height: 110px;
       margin: 0 auto 20px;
-
       border-radius: 28px;
 
       display: flex;
@@ -41,22 +38,16 @@
       background: rgba(255,255,255,0.03);
       backdrop-filter: blur(20px);
 
-      box-shadow:
-        0 20px 50px rgba(212,175,55,0.12),
-        inset 0 0 15px rgba(255,255,255,0.04);
+      box-shadow: 0 20px 50px rgba(212,175,55,0.12);
     }
 
     .logo {
       width: 72px;
-      height: 72px;
-      object-fit: contain;
     }
 
-    /* TEXT */
     .title {
       font-size: 24px;
       font-weight: 700;
-      letter-spacing: -0.3px;
       margin-bottom: 6px;
     }
 
@@ -66,7 +57,6 @@
       margin-bottom: 32px;
     }
 
-    /* 🔥 BUTTON (PERFECT MOBILE SIZE) */
     .btn {
       width: 100%;
       padding: 15px;
@@ -75,7 +65,6 @@
 
       font-size: 16px;
       font-weight: 600;
-      letter-spacing: 0.2px;
 
       color: white;
 
@@ -94,26 +83,6 @@
     .btn:active {
       transform: scale(0.97);
     }
-
-    /* DEPTH */
-    body::before {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 40%;
-      top: 0;
-      background: radial-gradient(circle, rgba(212,175,55,0.06), transparent 70%);
-    }
-
-    body::after {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 45%;
-      bottom: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
-    }
-
   </style>
 </head>
 
@@ -121,7 +90,6 @@
 
 <div class="container">
 
-  <!-- LOGO -->
   <div class="logo-wrap">
     <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png">
   </div>
@@ -129,10 +97,47 @@
   <div class="title">HubX Wallet</div>
   <div class="powered">Powered by FastFitHub</div>
 
-  <!-- CONNECT -->
-  <button class="btn">Connect Wallet</button>
+  <button class="btn" onclick="connectWallet()">Connect Wallet</button>
 
 </div>
+
+<!-- 🔥 WALLETCONNECT SDK -->
+<script src="https://unpkg.com/@walletconnect/ethereum-provider@2.8.0/dist/index.umd.min.js"></script>
+
+<script>
+let provider;
+
+async function connectWallet() {
+  try {
+
+    provider = await window.EthereumProvider.init({
+      projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
+      chains: [1],
+      showQrModal: true,
+      metadata: {
+        name: "HubX Wallet",
+        description: "FastFitHub Web3 Wallet",
+        url: window.location.origin,
+        icons: ["https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png"]
+      }
+    });
+
+    await provider.connect();
+
+    const accounts = provider.accounts;
+    const address = accounts[0];
+
+    console.log("Connected:", address);
+
+    // OPTIONAL: update UI
+    document.querySelector(".btn").innerText =
+      address.slice(0,6) + "..." + address.slice(-4);
+
+  } catch (err) {
+    console.log(err);
+  }
+}
+</script>
 
 </body>
 </html>
