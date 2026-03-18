@@ -1,4 +1,13 @@
+import { useAccount, useBalance } from 'wagmi'
+import { dogeosTestnet } from './config/wallet'
+
 export default function App() {
+  const { address, isConnected } = useAccount()
+  const { data: balance } = useBalance({
+    address,
+    chainId: dogeosTestnet.id,
+  })
+
   return (
     <div style={{
       background:"#0b0b0c",
@@ -15,14 +24,29 @@ export default function App() {
         FastFitHub Wallet
       </h1>
 
+      <div style={{ marginBottom: "20px" }}>
+        <w3m-button />
+      </div>
+
+      {isConnected && (
+        <div style={card}>
+          <span style={label}>Wallet Address</span>
+          <span style={{ ...amount, fontSize: "12px", color: "#9ca3af" }}>
+            {address?.slice(0, 6)}...{address?.slice(-4)}
+          </span>
+        </div>
+      )}
+
       <div style={card}>
-        <span style={label}>HUBX Balance</span>
-        <span style={amount}>120 HUBX</span>
+        <span style={label}>DOGE Balance</span>
+        <span style={amount}>
+          {isConnected ? `${Number(balance?.formatted || 0).toFixed(4)} DOGE` : "Connect Wallet"}
+        </span>
       </div>
 
       <div style={card}>
-        <span style={label}>DOGE Rewards</span>
-        <span style={amount}>0.42 DOGE</span>
+        <span style={label}>HUBX Balance</span>
+        <span style={amount}>120 HUBX</span>
       </div>
 
       <div style={card}>
