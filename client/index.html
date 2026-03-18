@@ -8,7 +8,7 @@
     body {
       margin:0;
       font-family:-apple-system;
-      background: radial-gradient(circle at 50% 20%, #1a1a1a, #000 80%);
+      background:#000;
       color:#fff;
       display:flex;
       justify-content:center;
@@ -17,24 +17,14 @@
     }
 
     .container {
+      text-align:center;
       width:90%;
       max-width:360px;
-      text-align:center;
     }
 
     .logo {
       width:90px;
       margin-bottom:20px;
-    }
-
-    h1 {
-      margin:0;
-      font-size:26px;
-    }
-
-    p {
-      color:#aaa;
-      margin-bottom:30px;
     }
 
     .btn {
@@ -48,7 +38,6 @@
       background: linear-gradient(120deg,#d4af37,#000,#d4af37);
       background-size:200%;
       animation: shine 4s linear infinite;
-      box-shadow:0 10px 30px rgba(212,175,55,0.3);
     }
 
     @keyframes shine {
@@ -61,98 +50,39 @@
 <body>
 
 <div class="container">
-
   <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png">
-
-  <h1>HubX Wallet</h1>
+  <h2>HubX Wallet</h2>
   <p>Powered by FastFitHub</p>
 
-  <button class="btn" onclick="connectWallet()">Connect Wallet</button>
-
+  <button class="btn" id="connectBtn">Connect Wallet</button>
 </div>
 
 <script type="module">
-import EthereumProvider from "https://esm.sh/@walletconnect/ethereum-provider@2.8.0";
+import { createAppKit } from "https://esm.sh/@reown/appkit@1.7.7";
 
-let wcProvider;
-
-async function initWC() {
-  wcProvider = await EthereumProvider.init({
-    projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
-    chains: [1],
-    showQrModal: true
-  });
-}
-
-await initWC();
-
-function isMobile() {
-  return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-}
-
-// 🔥 AUTO CONNECT WHEN INSIDE METAMASK
-async function autoConnect() {
-  if (window.ethereum && window.ethereum.isMetaMask) {
-    try {
-      const accounts = await window.ethereum.request({
-        method: "eth_accounts"
-      });
-
-      if (accounts.length) {
-        updateUI(accounts[0]);
-      }
-    } catch (e) {}
+const appKit = createAppKit({
+  projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
+  networks: ["eip155:1"], // Ethereum mainnet
+  metadata: {
+    name: "HubX Wallet",
+    description: "HubX Web3 Wallet",
+    url: "https://hubxwallet.vercel.app",
+    icons: ["https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png"]
   }
-}
+});
 
-// 🔥 UPDATE BUTTON UI
-function updateUI(address) {
-  const btn = document.querySelector(".btn");
-  btn.innerText =
-    address.slice(0,6) + "..." + address.slice(-4);
-}
-
-window.connectWallet = async function () {
-  const btn = document.querySelector(".btn");
-
-  try {
-    btn.innerText = "Connecting...";
-
-    // ✅ META MASK DIRECT
-    if (window.ethereum && window.ethereum.isMetaMask) {
-      const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts"
-      });
-
-      updateUI(accounts[0]);
-      return;
-    }
-
-    // ✅ MOBILE → OPEN METAMASK
-    if (isMobile()) {
-      window.location.href =
-        "https://metamask.app.link/dapp/hubxwallet.vercel.app";
-      return;
-    }
-
-    // ✅ DESKTOP → WALLETCONNECT
-    if (wcProvider.session) {
-      await wcProvider.disconnect();
-      await initWC();
-    }
-
-    await wcProvider.connect();
-
-    updateUI(wcProvider.accounts[0]);
-
-  } catch (err) {
-    console.error(err);
-    btn.innerText = "Connect Wallet";
-  }
+// 🔥 OPEN FULL SDK UI
+document.getElementById("connectBtn").onclick = async () => {
+  await appKit.open();
 };
 
-// 🔥 RUN ON LOAD
-autoConnect();
+// 🔥 HANDLE CONNECTION
+appKit.subscribeAccount((account) => {
+  if (account?.address) {
+    document.getElementById("connectBtn").innerText =
+      account.address.slice(0,6) + "..." + account.address.slice(-4);
+  }
+});
 </script>
 
 </body>
