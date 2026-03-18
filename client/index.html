@@ -6,156 +6,150 @@
 
   <style>
     body {
-  margin: 0;
-  font-family: -apple-system;
-  background: radial-gradient(circle at 50% 20%, #1a1a1a, #000 70%);
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  overflow: hidden;
-}
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont;
+      background: radial-gradient(circle at 50% 20%, #1a1a1a, #000 70%);
+      color: white;
 
-/* 🔥 LOGO GLOW + ANIMATION */
-.logo-wrap {
-  width: 130px;
-  height: 130px;
-  margin: 0 auto 20px;
-  border-radius: 35px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background: radial-gradient(circle, rgba(212,175,55,0.25), transparent 70%);
-  box-shadow: 0 0 80px rgba(212,175,55,0.15);
-
-  animation: pulseGlow 3s infinite ease-in-out;
-}
-
-@keyframes pulseGlow {
-  0% { box-shadow: 0 0 40px rgba(212,175,55,0.1); }
-  50% { box-shadow: 0 0 90px rgba(212,175,55,0.35); }
-  100% { box-shadow: 0 0 40px rgba(212,175,55,0.1); }
-}
-
-.logo {
-  width: 85px;
-  border-radius: 20px;
-}
-
-/* TEXT */
-.title {
-  font-size: 24px;
-  font-weight: 700;
-}
-
-.powered {
-  font-size: 13px;
-  color: #aaa;
-  margin-bottom: 40px;
-}
-
-/* 🔥 BUTTON WITH LIGHT SWEEP */
-.btn {
-  width: 100%;
-  padding: 18px;
-  border-radius: 40px;
-  border: none;
-  font-size: 16px;
-  font-weight: 600;
-  color: white;
-
-  background: linear-gradient(120deg,#d4af37,#000,#d4af37);
-  background-size: 200% 100%;
-
-  animation: shine 4s linear infinite;
-
-  box-shadow: 0 20px 60px rgba(212,175,55,0.25);
-}
-
-@keyframes shine {
-  0% { background-position: 0% }
-  100% { background-position: 200% }
-}
-
-.btn:active {
-  transform: scale(0.96);
-}
-
-/* 🔥 DEPTH OVERLAY */
-body::before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 40%;
-  top: 0;
-  background: radial-gradient(circle, rgba(212,175,55,0.08), transparent 70%);
-}
-
-body::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 40%;
-  bottom: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-}
-
-    /* 🔥 LOGO BLEND EFFECT */
-    .logo-wrap {
-      width: 120px;
-      height: 120px;
-      margin: 0 auto 15px;
-      border-radius: 30px;
-
-      background: radial-gradient(circle, rgba(212,175,55,0.25), transparent 70%);
       display: flex;
       justify-content: center;
       align-items: center;
 
-      box-shadow: 0 20px 60px rgba(212,175,55,0.15);
+      min-height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+    }
+
+    /* 🔥 LOGO (PREMIUM GLASS BALANCE) */
+    .logo-wrap {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 18px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      border-radius: 30px;
+
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(20px);
+
+      box-shadow:
+        0 20px 60px rgba(212,175,55,0.15),
+        inset 0 0 20px rgba(255,255,255,0.05);
+
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+      100% { transform: translateY(0px); }
     }
 
     .logo {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-      border-radius: 20px;
+      width: 75px;
     }
 
     .title {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 700;
-      margin-top: 10px;
     }
 
     .powered {
       font-size: 13px;
       color: #aaa;
-      margin-bottom: 30px;
+      margin-bottom: 28px;
     }
 
-    /* BUTTON */
+    /* 🔥 CONNECT BUTTON */
     .btn {
       width: 100%;
-      padding: 18px;
+      padding: 14px;
       border-radius: 30px;
       border: none;
-      background: linear-gradient(135deg,#d4af37,#000);
-      color: white;
-      font-size: 16px;
-      font-weight: 600;
 
-      box-shadow: 0 15px 40px rgba(212,175,55,0.25);
-      transition: 0.2s;
+      font-size: 15px;
+      font-weight: 600;
+      color: white;
+
+      background: linear-gradient(120deg,#d4af37,#000,#d4af37);
+      background-size: 200% 100%;
+      animation: shine 4s linear infinite;
+
+      box-shadow: 0 12px 35px rgba(212,175,55,0.25);
+      margin-bottom: 25px;
+    }
+
+    @keyframes shine {
+      0% { background-position: 0% }
+      100% { background-position: 200% }
     }
 
     .btn:active {
       transform: scale(0.96);
     }
 
+    /* 🔥 ACTION BUTTONS */
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .action {
+      flex: 1;
+      padding: 14px;
+      border-radius: 18px;
+
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(20px);
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+
+      font-size: 13px;
+      color: #ddd;
+
+      transition: 0.2s;
+    }
+
+    .action:active {
+      transform: scale(0.95);
+    }
+
+    .icon {
+      font-size: 20px;
+    }
+
+    /* DEPTH */
+    body::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 35%;
+      top: 0;
+      background: radial-gradient(circle, rgba(212,175,55,0.08), transparent 70%);
+    }
+
+    body::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 40%;
+      bottom: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
+    }
   </style>
 </head>
 
@@ -163,17 +157,61 @@ body::after {
 
 <div class="container">
 
-  <!-- 🔥 LOGO WITH BLEND -->
+  <!-- LOGO -->
   <div class="logo-wrap">
-    <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png" />
+    <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png">
   </div>
 
   <div class="title">HubX Wallet</div>
   <div class="powered">Powered by FastFitHub</div>
 
-  <button class="btn">Connect Wallet</button>
+  <!-- CONNECT -->
+  <button class="btn" onclick="connectWallet()">Connect Wallet</button>
+
+  <!-- ACTIONS -->
+  <div class="actions">
+    <div class="action">
+      <div class="icon">🔄</div>
+      <span>Swap</span>
+    </div>
+
+    <div class="action">
+      <div class="icon">📈</div>
+      <span>Trade</span>
+    </div>
+
+    <div class="action">
+      <div class="icon">💳</div>
+      <span>Buy</span>
+    </div>
+  </div>
 
 </div>
+
+<!-- WALLET CONNECT -->
+<script src="https://unpkg.com/@walletconnect/ethereum-provider@2.8.0/dist/index.umd.min.js"></script>
+
+<script>
+async function connectWallet() {
+  try {
+    if (window.ethereum) {
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      alert("Wallet Connected");
+    } else {
+      const provider = await window.EthereumProvider.init({
+        projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
+        chains: [1],
+        showQrModal: true
+      });
+
+      await provider.connect();
+      alert("Wallet Connected");
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+</script>
 
 </body>
 </html>
