@@ -102,7 +102,7 @@
 </div>
 
 <!-- 🔥 WALLETCONNECT SDK -->
-<script src="https://unpkg.com/@walletconnect/ethereum-provider@2.8.0/dist/index.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.8.0/dist/index.umd.min.js"></script>
 
 <script>
 let provider;
@@ -114,9 +114,10 @@ async function connectWallet() {
     btn.innerText = "Connecting...";
     btn.disabled = true;
 
-    // 🔥 CHECK SDK LOADED
+    // ✅ Wait for SDK
     if (!window.EthereumProvider) {
-      alert("Wallet SDK not loaded. Refresh page.");
+      console.log("SDK not loaded");
+      alert("Network issue. Reload once.");
       btn.innerText = "Connect Wallet";
       btn.disabled = false;
       return;
@@ -138,17 +139,16 @@ async function connectWallet() {
 
     const address = provider.accounts[0];
 
-    // ✅ SUCCESS UI
     btn.innerText =
       address.slice(0,6) + "..." + address.slice(-4);
 
   } catch (err) {
-    console.log("ERROR:", err);
-
-    alert("Connection failed");
+    console.error(err);
 
     btn.innerText = "Connect Wallet";
     btn.disabled = false;
+
+    alert("Connection failed");
   }
 }
 </script>
