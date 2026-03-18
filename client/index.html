@@ -101,11 +101,12 @@ import EthereumProvider from "https://esm.sh/@walletconnect/ethereum-provider@2.
 
 let wcProvider;
 
+// Init WalletConnect (only for fallback)
 (async () => {
   wcProvider = await EthereumProvider.init({
     projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
     chains: [1],
-    showQrModal: true,
+    showQrModal: true
   });
 })();
 
@@ -115,10 +116,10 @@ window.connectWallet = async function () {
   try {
     btn.innerText = "Connecting...";
 
-    // ✅ 1. USE METAMASK IF AVAILABLE
-    if (window.ethereum) {
+    // 🔥 STEP 1: META MASK DETECT
+    if (window.ethereum && window.ethereum.isMetaMask) {
       const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts",
+        method: "eth_requestAccounts"
       });
 
       const address = accounts[0];
@@ -126,10 +127,16 @@ window.connectWallet = async function () {
       btn.innerText =
         address.slice(0,6) + "..." + address.slice(-4);
 
+      return; // 🚀 STOP HERE (NO WALLETCONNECT)
+    }
+
+    // 🔥 STEP 2: FALLBACK WALLETCONNECT
+    if (!wcProvider) {
+      alert("Wallet system not ready");
+      btn.innerText = "Connect Wallet";
       return;
     }
 
-    // ✅ 2. FALLBACK → WALLETCONNECT
     await wcProvider.connect();
 
     const address = wcProvider.accounts[0];
@@ -142,7 +149,7 @@ window.connectWallet = async function () {
 
     btn.innerText = "Connect Wallet";
 
-    alert("Connection failed");
+    alert("Connection failed. Try opening in wallet browser.");
   }
 };
 </script>
