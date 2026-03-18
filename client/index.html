@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>HubX Wallet</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -16,7 +16,7 @@
       justify-content:center;
       align-items:center;
 
-      min-height:100vh;
+      height:100vh;
       padding:20px;
     }
 
@@ -78,10 +78,6 @@
       0% { background-position:0% }
       100% { background-position:200% }
     }
-
-    .btn:active {
-      transform:scale(0.96);
-    }
   </style>
 </head>
 
@@ -96,35 +92,37 @@
   <div class="title">HubX Wallet</div>
   <div class="powered">Powered by FastFitHub</div>
 
-  <button class="btn" id="connectBtn">Connect Wallet</button>
+  <button class="btn" onclick="connectWallet()">Connect Wallet</button>
 
 </div>
 
-<!-- ✅ STABLE IMPORT (NO CDN FAIL) -->
-<script type="module">
-import EthereumProvider from "https://esm.sh/@walletconnect/ethereum-provider@2.8.0";
+<script>
+async function connectWallet() {
+  const btn = document.querySelector(".btn");
 
-const btn = document.getElementById("connectBtn");
-
-let provider;
-
-btn.addEventListener("click", async () => {
   try {
     btn.innerText = "Connecting...";
     btn.disabled = true;
 
-    provider = await EthereumProvider.init({
-      projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
-      chains: [1],
-      showQrModal: true,
-    });
+    // 🔥 STEP 1: TRY METAMASK / TRUST (INJECTED)
+    if (window.ethereum) {
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts"
+      });
 
-    await provider.connect();
+      const address = accounts[0];
 
-    const address = provider.accounts[0];
+      btn.innerText =
+        address.slice(0,6) + "..." + address.slice(-4);
 
-    btn.innerText =
-      address.slice(0,6) + "..." + address.slice(-4);
+      return;
+    }
+
+    // 🔥 STEP 2: FALLBACK (NO WALLET)
+    alert("Open this in MetaMask or Trust Wallet browser");
+
+    btn.innerText = "Connect Wallet";
+    btn.disabled = false;
 
   } catch (err) {
     console.error(err);
@@ -134,7 +132,7 @@ btn.addEventListener("click", async () => {
 
     alert("Connection failed");
   }
-});
+}
 </script>
 
 </body>
