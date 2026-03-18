@@ -17,14 +17,24 @@
     }
 
     .container {
-      text-align:center;
       width:90%;
       max-width:360px;
+      text-align:center;
     }
 
     .logo {
       width:90px;
       margin-bottom:20px;
+    }
+
+    h2 {
+      margin:0;
+      font-size:24px;
+    }
+
+    p {
+      color:#aaa;
+      margin-bottom:30px;
     }
 
     .btn {
@@ -50,33 +60,41 @@
 <body>
 
 <div class="container">
+
   <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png">
+
   <h2>HubX Wallet</h2>
   <p>Powered by FastFitHub</p>
 
-  <button class="btn" id="connectBtn">Connect Wallet</button>
+  <button class="btn" id="connectBtn">
+    Connect Wallet
+  </button>
+
 </div>
 
 <script type="module">
 import { createAppKit } from "https://esm.sh/@reown/appkit@1.7.7";
 
+// 🔥 INIT SDK (600+ wallets)
 const appKit = createAppKit({
   projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
-  networks: ["eip155:1"], // Ethereum mainnet
+
+  networks: ["eip155:1"],
+
   metadata: {
     name: "HubX Wallet",
-    description: "HubX Web3 Wallet",
+    description: "HubX Premium Wallet",
     url: "https://hubxwallet.vercel.app",
     icons: ["https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png"]
   }
 });
 
-// 🔥 OPEN FULL SDK UI
+// 🔥 BUTTON CLICK → OPEN FULL WALLET LIST
 document.getElementById("connectBtn").onclick = async () => {
   await appKit.open();
 };
 
-// 🔥 HANDLE CONNECTION
+// 🔥 AFTER CONNECT
 appKit.subscribeAccount((account) => {
   if (account?.address) {
     document.getElementById("connectBtn").innerText =
