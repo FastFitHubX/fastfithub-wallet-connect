@@ -14,7 +14,7 @@
 
     body {
       font-family: -apple-system, system-ui;
-      background: radial-gradient(circle at 50% 25%, #1a1a1a, #000 75%);
+      background: radial-gradient(circle at 50% 20%, #1a1a1a, #000 75%);
       color: white;
 
       display: flex;
@@ -22,28 +22,37 @@
       align-items: center;
 
       min-height: 100vh;
-      padding: 20px;
+
+      padding:
+        env(safe-area-inset-top)
+        20px
+        env(safe-area-inset-bottom);
     }
 
     .container {
       width: 100%;
       max-width: 380px;
       text-align: center;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      gap: 18px;
     }
 
     .logo-wrap {
       width: 110px;
       height: 110px;
-      margin: 0 auto 20px;
       border-radius: 28px;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
-      /* 🔥 subtle glass (NOT opaque) */
       background: rgba(255,255,255,0.03);
-      backdrop-filter: blur(18px);
+      backdrop-filter: blur(20px);
 
       box-shadow: 0 20px 60px rgba(212,175,55,0.15);
     }
@@ -55,21 +64,27 @@
     .title {
       font-size: 24px;
       font-weight: 700;
-      margin-bottom: 6px;
+      text-align: center;
     }
 
     .powered {
       font-size: 13px;
       color: #9a9a9a;
-      margin-bottom: 32px;
+      margin-top: -6px;
     }
 
-    /* 🔥 STYLE REOWN BUTTON */
+    /* 🔥 BUTTON STYLING */
     w3m-button {
+      margin-top: 20px;
+
       --w3m-accent: #d4af37;
       --w3m-border-radius-master: 30px;
       --w3m-font-family: -apple-system;
+
+      width: 100%;
+      max-width: 320px;
     }
+
   </style>
 </head>
 
@@ -84,12 +99,12 @@
   <div class="title">HubX Wallet</div>
   <div class="powered">Powered by FastFitHub</div>
 
-  <!-- 🔥 REAL CONNECT BUTTON -->
+  <!-- 🔥 CLEAN CONNECT BUTTON -->
   <w3m-button />
 
 </div>
 
-<!-- 🔥 REOWN APPKIT (REAL FIX) -->
+<!-- 🔥 REOWN SDK -->
 <script type="module">
 import { createAppKit } from "https://esm.sh/@reown/appkit";
 import { WagmiAdapter } from "https://esm.sh/@reown/appkit-adapter-wagmi";
