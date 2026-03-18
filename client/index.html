@@ -108,7 +108,19 @@
 let provider;
 
 async function connectWallet() {
+  const btn = document.querySelector(".btn");
+
   try {
+    btn.innerText = "Connecting...";
+    btn.disabled = true;
+
+    // 🔥 CHECK SDK LOADED
+    if (!window.EthereumProvider) {
+      alert("Wallet SDK not loaded. Refresh page.");
+      btn.innerText = "Connect Wallet";
+      btn.disabled = false;
+      return;
+    }
 
     provider = await window.EthereumProvider.init({
       projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
@@ -124,17 +136,19 @@ async function connectWallet() {
 
     await provider.connect();
 
-    const accounts = provider.accounts;
-    const address = accounts[0];
+    const address = provider.accounts[0];
 
-    console.log("Connected:", address);
-
-    // OPTIONAL: update UI
-    document.querySelector(".btn").innerText =
+    // ✅ SUCCESS UI
+    btn.innerText =
       address.slice(0,6) + "..." + address.slice(-4);
 
   } catch (err) {
-    console.log(err);
+    console.log("ERROR:", err);
+
+    alert("Connection failed");
+
+    btn.innerText = "Connect Wallet";
+    btn.disabled = false;
   }
 }
 </script>
