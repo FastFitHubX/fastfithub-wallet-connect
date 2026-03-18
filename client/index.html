@@ -101,14 +101,18 @@ import EthereumProvider from "https://esm.sh/@walletconnect/ethereum-provider@2.
 
 let wcProvider;
 
-// Init WalletConnect (only for fallback)
-(async () => {
+async function initWC() {
   wcProvider = await EthereumProvider.init({
     projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
     chains: [1],
-    showQrModal: true
+    showQrModal: true,
+    qrModalOptions: {
+      themeMode: "dark"
+    }
   });
-})();
+}
+
+await initWC();
 
 window.connectWallet = async function () {
   const btn = document.querySelector(".btn");
@@ -116,25 +120,22 @@ window.connectWallet = async function () {
   try {
     btn.innerText = "Connecting...";
 
-    // 🔥 STEP 1: META MASK DETECT
+    // ✅ USE METAMASK DIRECTLY (NO WALLETCONNECT)
     if (window.ethereum && window.ethereum.isMetaMask) {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts"
       });
 
-      const address = accounts[0];
-
       btn.innerText =
-        address.slice(0,6) + "..." + address.slice(-4);
+        accounts[0].slice(0,6) + "..." + accounts[0].slice(-4);
 
-      return; // 🚀 STOP HERE (NO WALLETCONNECT)
+      return;
     }
 
-    // 🔥 STEP 2: FALLBACK WALLETCONNECT
-    if (!wcProvider) {
-      alert("Wallet system not ready");
-      btn.innerText = "Connect Wallet";
-      return;
+    // 🔥 IMPORTANT: RESET SESSION (FIXES EXPIRED QR)
+    if (wcProvider.session) {
+      await wcProvider.disconnect();
+      await initWC();
     }
 
     await wcProvider.connect();
@@ -149,7 +150,7 @@ window.connectWallet = async function () {
 
     btn.innerText = "Connect Wallet";
 
-    alert("Connection failed. Try opening in wallet browser.");
+    alert("Connection failed. Use MetaMask browser for best experience.");
   }
 };
 </script>
