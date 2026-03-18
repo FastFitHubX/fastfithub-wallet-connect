@@ -1,0 +1,37 @@
+body {
+  margin: 0;
+  background: black;
+  color: white;
+  font-family: sans-serif;
+}
+
+.screen {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  width: 80px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  padding: 15px 40px;
+  border-radius: 30px;
+  border: none;
+  color: white;
+  background: linear-gradient(90deg, #c9a64b, #f5d97b, #c9a64b);
+}
+
+.card {
+  width: 80%;
+  background: #111;
+  margin: 10px;
+  padding: 15px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+}
