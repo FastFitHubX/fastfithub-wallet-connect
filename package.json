@@ -1,8 +1,23 @@
 {
-  "name": "hubxwallet",
-  "private": true,
+  "name": "hubx-wallet",
   "version": "1.0.0",
-  "engines": {
-    "node": "24.x"
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "wagmi": "^2.5.7",
+    "@reown/appkit": "latest",
+    "@reown/appkit-adapter-wagmi": "latest",
+    "viem": "^2.7.8"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "typescript": "^5.3.3"
   }
 }
