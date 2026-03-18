@@ -1,12 +1,12 @@
-import { useAppKitAccount } from '@reown/appkit/react'
+import { useAppKitAccount, AppKitButton } from '@reown/appkit/react'
 import './config/appkit'
-import { AppKitButton } from '@reown/appkit/react'
 
-import { useAccount, useBalance } from 'wagmi'
+import { useBalance } from 'wagmi'
 import { dogeosTestnet } from './config/wallet'
 
 export default function App() {
   const { address, isConnected } = useAppKitAccount()
+
   const { data: balance } = useBalance({
     address,
     chainId: dogeosTestnet.id,
@@ -28,10 +28,12 @@ export default function App() {
         FastFitHub Wallet
       </h1>
 
+      {/* ✅ FIXED BUTTON */}
       <div style={{ marginBottom: "20px" }}>
-        <w3m-button />
+        <AppKitButton />
       </div>
 
+      {/* ✅ WALLET ADDRESS */}
       {isConnected && (
         <div style={card}>
           <span style={label}>Wallet Address</span>
@@ -41,23 +43,31 @@ export default function App() {
         </div>
       )}
 
+      {/* ✅ DOGE BALANCE */}
       <div style={card}>
         <span style={label}>DOGE Balance</span>
         <span style={amount}>
-          {isConnected ? `${Number(balance?.formatted || 0).toFixed(4)} DOGE` : "Connect Wallet"}
+          {isConnected
+            ? `${Number(balance?.formatted || 0).toFixed(4)} DOGE`
+            : "Connect Wallet"}
         </span>
       </div>
 
+      {/* ✅ HUBX (TEMP DISPLAY) */}
       <div style={card}>
         <span style={label}>HUBX Balance</span>
-{isConnected ? address : "Connect Wallet"}
+        <span style={amount}>
+          {isConnected ? "120 HUBX" : "Connect Wallet"}
+        </span>
       </div>
 
+      {/* ✅ BTC */}
       <div style={card}>
         <span style={label}>BTC Rewards</span>
         <span style={amount}>0.00004 BTC</span>
       </div>
 
+      {/* BUTTONS */}
       <div style={{marginTop:"25px",display:"flex",gap:"12px"}}>
         <button style={primary}>Record Workout</button>
         <button style={secondary}>Leaderboard</button>
