@@ -16,33 +16,46 @@
     }
 
     .container {
-      text-align: center;
       width: 90%;
       max-width: 400px;
+      text-align: center;
+    }
+
+    img {
+      width: 80px;
+      margin-bottom: 20px;
     }
 
     h1 {
-      margin-bottom: 40px;
-    }
-
-    .card {
-      background: #111;
-      padding: 20px;
-      border-radius: 16px;
-      margin-bottom: 15px;
-      display: flex;
-      justify-content: space-between;
+      font-size: 22px;
+      margin-bottom: 30px;
     }
 
     .btn {
       width: 100%;
-      padding: 15px;
-      border-radius: 12px;
+      padding: 16px;
+      border-radius: 14px;
       border: none;
       background: linear-gradient(90deg,#6366f1,#8b5cf6);
       color: white;
       font-size: 16px;
-      margin-top: 20px;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background: #111;
+      padding: 18px;
+      border-radius: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .highlight {
+      color: #facc15;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -51,28 +64,29 @@
 
 <div class="container">
 
-  <h1>FastFitHub Wallet 🚀</h1>
+  <!-- LOGO -->
+  <img src="https://imgur.com/gallery/fastfithub-indentity-XckbRSe" />
+
+  <h1>FastFitHub Wallet</h1>
 
   <button class="btn" onclick="connectWallet()">
     Connect Wallet
   </button>
 
   <div class="card">
-    <span>DOGE Balance</span>
-    <span id="doge">--</span>
+    <span>Status</span>
+    <span class="highlight">Not Connected</span>
   </div>
 
   <div class="card">
-    <span>HUBX Balance</span>
-    <span>120 HUBX</span>
+    <span>Membership</span>
+    <span class="highlight">Elite</span>
   </div>
 
   <div class="card">
-    <span>BTC Rewards</span>
-    <span>0.00004 BTC</span>
+    <span>Rewards Engine</span>
+    <span class="highlight">Active</span>
   </div>
-
-  <p id="wallet" style="margin-top:15px;color:#888;"></p>
 
 </div>
 
@@ -87,8 +101,7 @@ async function connectWallet() {
     method: "eth_requestAccounts"
   });
 
-  document.getElementById("wallet").innerText =
-    "Connected: " + accounts[0];
+  alert("Connected: " + accounts[0]);
 }
 </script>
 
