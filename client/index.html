@@ -75,32 +75,55 @@
 <script type="module">
 import { createAppKit } from "https://esm.sh/@reown/appkit@1.7.7";
 
-// 🔥 INIT SDK (600+ wallets)
-const appKit = createAppKit({
-  projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
+let appKit;
 
-  networks: ["eip155:1"],
+// ✅ INIT ONLY ONCE
+async function init() {
+  appKit = createAppKit({
+    projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
 
-  metadata: {
-    name: "HubX Wallet",
-    description: "HubX Premium Wallet",
-    url: "https://hubxwallet.vercel.app",
-    icons: ["https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png"]
-  }
-});
+    networks: ["eip155:1"],
 
-// 🔥 BUTTON CLICK → OPEN FULL WALLET LIST
+    metadata: {
+      name: "HubX Wallet",
+      description: "HubX Wallet",
+      url: "https://hubxwallet.vercel.app",
+      icons: ["https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png"]
+    }
+  });
+
+  // 🔥 AUTO RESTORE SESSION (CRITICAL)
+  appKit.subscribeAccount((account) => {
+    if (account?.address) {
+      updateUI(account.address);
+    }
+  });
+
+  // 🔥 HANDLE CONNECT STATE
+  appKit.subscribeState((state) => {
+    if (state.connected) {
+      console.log("Connected");
+    }
+  });
+}
+
+await init();
+
+// 🔥 BUTTON CLICK
 document.getElementById("connectBtn").onclick = async () => {
-  await appKit.open();
+  try {
+    await appKit.open(); // opens full WalletConnect UI
+  } catch (e) {
+    console.error(e);
+  }
 };
 
-// 🔥 AFTER CONNECT
-appKit.subscribeAccount((account) => {
-  if (account?.address) {
-    document.getElementById("connectBtn").innerText =
-      account.address.slice(0,6) + "..." + account.address.slice(-4);
-  }
-});
+// 🔥 UI UPDATE
+function updateUI(address) {
+  const btn = document.getElementById("connectBtn");
+  btn.innerText =
+    address.slice(0,6) + "..." + address.slice(-4);
+}
 </script>
 
 </body>
