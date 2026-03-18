@@ -102,37 +102,22 @@
 </div>
 
 <!-- 🔥 WALLETCONNECT SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.8.0/dist/index.umd.min.js"></script>
+<script type="module">
+import EthereumProvider from "https://esm.sh/@walletconnect/ethereum-provider@2.8.0";
 
-<script>
 let provider;
 
-async function connectWallet() {
+window.connectWallet = async function () {
   const btn = document.querySelector(".btn");
 
   try {
     btn.innerText = "Connecting...";
     btn.disabled = true;
 
-    // ✅ Wait for SDK
-    if (!window.EthereumProvider) {
-      console.log("SDK not loaded");
-      alert("Network issue. Reload once.");
-      btn.innerText = "Connect Wallet";
-      btn.disabled = false;
-      return;
-    }
-
-    provider = await window.EthereumProvider.init({
+    provider = await EthereumProvider.init({
       projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
       chains: [1],
       showQrModal: true,
-      metadata: {
-        name: "HubX Wallet",
-        description: "FastFitHub Web3 Wallet",
-        url: window.location.origin,
-        icons: ["https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png"]
-      }
     });
 
     await provider.connect();
@@ -144,13 +129,11 @@ async function connectWallet() {
 
   } catch (err) {
     console.error(err);
-
     btn.innerText = "Connect Wallet";
     btn.disabled = false;
-
     alert("Connection failed");
   }
-}
+};
 </script>
 
 </body>
