@@ -8,32 +8,39 @@
   <style>
     body {
       margin: 0;
-      background: radial-gradient(circle at top, #111 0%, #000 100%);
+      background: radial-gradient(circle at top, #0f0f10, #000);
       color: white;
       font-family: -apple-system, BlinkMacSystemFont;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      overflow: hidden;
     }
 
     .container {
       width: 92%;
       max-width: 420px;
       text-align: center;
-      animation: fadeIn 0.8s ease;
+      animation: fadeUp 0.8s ease;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px);}
-      to { opacity: 1; transform: translateY(0);}
+    @keyframes fadeUp {
+      from {opacity:0; transform:translateY(30px);}
+      to {opacity:1; transform:translateY(0);}
     }
 
     .logo {
-      font-size: 40px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      margin-bottom: 10px;
+      width: 90px;
+      height: 90px;
+      border-radius: 20px;
+      margin-bottom: 15px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%,100% {transform: translateY(0);}
+      50% {transform: translateY(-8px);}
     }
 
     h1 {
@@ -51,18 +58,24 @@
       color: white;
       font-size: 16px;
       font-weight: 600;
-      margin-bottom: 25px;
-      box-shadow: 0 10px 30px rgba(139,92,246,0.3);
+      margin-bottom: 20px;
+      box-shadow: 0 10px 40px rgba(139,92,246,0.4);
       transition: 0.2s;
     }
 
     .btn:active {
-      transform: scale(0.97);
+      transform: scale(0.96);
+    }
+
+    .wallet-tag {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 25px;
     }
 
     .card {
       background: rgba(255,255,255,0.04);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
       padding: 18px;
       border-radius: 18px;
       margin-bottom: 12px;
@@ -84,14 +97,18 @@
 
 <div class="container">
 
-  <!-- PREMIUM TEXT LOGO -->
-  <div class="logo">FF</div>
+  <!-- ✅ REAL LOGO (CHANGE THIS LINK) -->
+  <img class="logo" src="https://raw.githubusercontent.com/FastFitHubX/fastfithub-wallet-connect/main/logo.png" />
 
   <h1>HubX Wallet By FastFitHub</h1>
 
   <button class="btn" onclick="connectWallet()">
     Connect Wallet
   </button>
+
+  <div class="wallet-tag">
+    Supports 600+ wallets • Auto detect enabled
+  </div>
 
   <div class="card">
     <span>Status</span>
@@ -110,6 +127,7 @@
 
 </div>
 
+<!-- WalletConnect -->
 <script src="https://unpkg.com/@walletconnect/ethereum-provider@2.8.0/dist/index.umd.min.js"></script>
 
 <script>
@@ -129,8 +147,8 @@ async function connectWallet() {
     document.querySelector(".status").innerText = short;
 
   } catch (e) {
-    alert("Connection failed");
     console.log(e);
+    alert("Wallet connection failed");
   }
 }
 </script>
