@@ -60,14 +60,15 @@
 </div>
 
 <script type="module">
-import { createAppKit } from "https://esm.sh/@reown/appkit@1.7.7";
 import EthereumProvider from "https://esm.sh/@walletconnect/ethereum-provider@2.8.0";
 
-// 🔥 CORE PROVIDER (REAL CONNECTION)
-const provider = await EthereumProvider.init({
+let provider;
+
+// ✅ INIT ONCE
+provider = await EthereumProvider.init({
   projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
   chains: [1],
-  showQrModal: true,
+  showQrModal: true, // THIS shows your exact UI
   metadata: {
     name: "HubX Wallet",
     description: "HubX Wallet",
@@ -76,33 +77,20 @@ const provider = await EthereumProvider.init({
   }
 });
 
-// 🔥 UI KIT (YOUR MODAL)
-const appKit = createAppKit({
-  projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
-  networks: ["eip155:1"],
-  metadata: {
-    name: "HubX Wallet",
-    description: "HubX Wallet",
-    url: "https://hubxwallet.vercel.app",
-    icons: ["https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png"]
-  }
-});
-
-// 🔥 BUTTON CLICK
+// ✅ BUTTON WORKING
 document.getElementById("connectBtn").onclick = async () => {
   try {
-    // Step 1: open your desired UI
-    await appKit.open();
+    document.getElementById("connectBtn").innerText = "Opening...";
 
-    // Step 2: trigger real connection
-    await provider.connect();
+    await provider.connect(); // ONLY THIS
 
   } catch (err) {
     console.error(err);
+    document.getElementById("connectBtn").innerText = "Connect Wallet";
   }
 };
 
-// 🔥 SUCCESS HANDLER
+// ✅ SUCCESS
 provider.on("connect", () => {
   const address = provider.accounts[0];
 
@@ -110,7 +98,7 @@ provider.on("connect", () => {
     address.slice(0,6) + "..." + address.slice(-4);
 });
 
-// 🔥 SESSION RESTORE
+// ✅ AUTO RESTORE
 if (provider.session) {
   const address = provider.accounts[0];
   document.getElementById("connectBtn").innerText =
