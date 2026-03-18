@@ -1,3 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HubX Wallet By FastFitHub</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: #0b0b0c;
+      color: white;
+      font-family: Arial;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    img {
+      width: 80px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 16px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(90deg,#6366f1,#8b5cf6);
+      color: white;
+      font-size: 16px;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background: #111;
+      padding: 18px;
+      border-radius: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .highlight {
+      color: #facc15;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- LOGO (replace later with your own link) -->
+  <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_placeholder.png" />
+
+  <h1>HubX Wallet By FastFitHub</h1>
+
+  <button class="btn" onclick="connectWallet()">
+    Connect Wallet
+  </button>
+
+  <div class="card">
+    <span>Status</span>
+    <span class="highlight status">Not Connected</span>
+  </div>
+
+  <div class="card">
+    <span>Membership</span>
+    <span class="highlight">Elite</span>
+  </div>
+
+  <div class="card">
+    <span>Rewards Engine</span>
+    <span class="highlight">Active</span>
+  </div>
+
+</div>
+
+<!-- WalletConnect SDK -->
 <script src="https://unpkg.com/@walletconnect/ethereum-provider@2.11.0/dist/index.umd.js"></script>
 
 <script>
@@ -27,53 +120,6 @@ async function connectWallet() {
   } catch (err) {
     console.log(err);
   }
-}
-</script>
-
-<body>
-
-<div class="container">
-
-  <!-- ✅ WORKING LOGO (replace later if needed) -->
-  <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_placeholder.png" />
-
-  <h1>FastFitHub Wallet</h1>
-
-  <button class="btn" onclick="connectWallet()">
-    Connect Wallet
-  </button>
-
-  <div class="card">
-    <span>Status</span>
-    <span class="highlight status">Not Connected</span>
-  </div>
-
-  <div class="card">
-    <span>Membership</span>
-    <span class="highlight">Elite</span>
-  </div>
-
-  <div class="card">
-    <span>Rewards Engine</span>
-    <span class="highlight">Active</span>
-  </div>
-
-</div>
-
-<script>
-async function connectWallet() {
-  if (!window.ethereum) {
-    alert("Open in MetaMask browser");
-    return;
-  }
-
-  const accounts = await window.ethereum.request({
-    method: "eth_requestAccounts"
-  });
-
-  const short = accounts[0].slice(0,6) + "..." + accounts[0].slice(-4);
-
-  document.querySelector(".status").innerText = short;
 }
 </script>
 
