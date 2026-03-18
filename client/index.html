@@ -7,65 +7,72 @@
   <style>
     body {
       margin: 0;
-      background: #f5f5f7;
       font-family: -apple-system;
+      background: radial-gradient(circle at top, #1a1a1a, #000);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
 
     .container {
-      padding: 20px;
-      max-width: 420px;
-      margin: auto;
       text-align: center;
+      width: 90%;
+      max-width: 420px;
+    }
+
+    /* 🔥 LOGO BLEND EFFECT */
+    .logo-wrap {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 15px;
+      border-radius: 30px;
+
+      background: radial-gradient(circle, rgba(212,175,55,0.25), transparent 70%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      box-shadow: 0 20px 60px rgba(212,175,55,0.15);
     }
 
     .logo {
       width: 80px;
-      margin-bottom: 10px;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 20px;
     }
 
     .title {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 700;
+      margin-top: 10px;
     }
 
     .powered {
-      font-size: 12px;
-      color: #888;
+      font-size: 13px;
+      color: #aaa;
       margin-bottom: 30px;
     }
 
+    /* BUTTON */
     .btn {
       width: 100%;
-      padding: 16px;
-      border-radius: 20px;
+      padding: 18px;
+      border-radius: 30px;
       border: none;
       background: linear-gradient(135deg,#d4af37,#000);
       color: white;
       font-size: 16px;
+      font-weight: 600;
+
+      box-shadow: 0 15px 40px rgba(212,175,55,0.25);
+      transition: 0.2s;
     }
 
-    .hidden {
-      display: none;
-    }
-
-    /* Glass UI */
-    .glass {
-      background: rgba(255,255,255,0.6);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 15px;
-      margin-top: 20px;
-    }
-
-    .token {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px 0;
-      border-bottom: 1px solid #eee;
-    }
-
-    .token:last-child {
-      border-bottom: none;
+    .btn:active {
+      transform: scale(0.96);
     }
 
   </style>
@@ -75,82 +82,17 @@
 
 <div class="container">
 
-  <!-- HEADER -->
-  <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png">
+  <!-- 🔥 LOGO WITH BLEND -->
+  <div class="logo-wrap">
+    <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png" />
+  </div>
+
   <div class="title">HubX Wallet</div>
   <div class="powered">Powered by FastFitHub</div>
 
-  <!-- CONNECT -->
-  <button class="btn" onclick="connectWallet()">Connect Wallet</button>
-
-  <!-- WALLET DATA (HIDDEN INITIALLY) -->
-  <div id="walletUI" class="hidden">
-
-    <div class="glass">
-      <div><b>Address:</b> <span id="address"></span></div>
-    </div>
-
-    <div class="glass">
-
-      <div class="token">
-        <span>HUBX</span>
-        <span id="hubx">120</span>
-      </div>
-
-      <div class="token">
-        <span>Dogecoin</span>
-        <span id="doge">--</span>
-      </div>
-
-      <div class="token">
-        <span>Bitcoin</span>
-        <span id="btc">--</span>
-      </div>
-
-    </div>
-
-  </div>
+  <button class="btn">Connect Wallet</button>
 
 </div>
-
-<script src="https://unpkg.com/@walletconnect/ethereum-provider@2.8.0/dist/index.umd.min.js"></script>
-
-<script>
-async function connectWallet() {
-  try {
-
-    let account;
-
-    if (window.ethereum) {
-      const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts"
-      });
-      account = accounts[0];
-    } else {
-      const provider = await window.EthereumProvider.init({
-        projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
-        chains: [1],
-        showQrModal: true
-      });
-
-      await provider.connect();
-      account = provider.accounts[0];
-    }
-
-    // ✅ SHOW UI AFTER CONNECT
-    document.getElementById("walletUI").classList.remove("hidden");
-
-    // ✅ SET ADDRESS
-    document.getElementById("address").innerText =
-      account.slice(0,6) + "..." + account.slice(-4);
-
-    // 🔥 (NEXT STEP YOU WILL ADD REAL BALANCE HERE)
-
-  } catch (e) {
-    console.log(e);
-  }
-}
-</script>
 
 </body>
 </html>
