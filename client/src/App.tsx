@@ -6,7 +6,7 @@ import { useAccount, useBalance } from 'wagmi'
 import { dogeosTestnet } from './config/wallet'
 
 export default function App() {
-  const { address, isConnected } = useAccount()
+  const { address, isConnected } = useAppKitAccount()
   const { data: balance } = useBalance({
     address,
     chainId: dogeosTestnet.id,
@@ -50,7 +50,7 @@ export default function App() {
 
       <div style={card}>
         <span style={label}>HUBX Balance</span>
-        <span style={amount}>120 HUBX</span>
+{isConnected ? address : "Connect Wallet"}
       </div>
 
       <div style={card}>
