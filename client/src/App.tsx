@@ -1,3 +1,4 @@
+import { useAppKitAccount } from '@reown/appkit/react'
 import './config/appkit'
 import { AppKitButton } from '@reown/appkit/react'
 
