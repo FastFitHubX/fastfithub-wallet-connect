@@ -21,14 +21,15 @@
       text-align: center;
     }
 
-    img {
-      width: 80px;
-      margin-bottom: 20px;
-    }
-
     h1 {
       font-size: 22px;
       margin-bottom: 30px;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 20px;
     }
 
     .btn {
@@ -64,8 +65,8 @@
 
 <div class="container">
 
-  <!-- LOGO (replace later with your own link) -->
-  <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_placeholder.png" />
+  <!-- TEXT LOGO (NO IMAGE ISSUE) -->
+  <div class="logo">FF</div>
 
   <h1>HubX Wallet By FastFitHub</h1>
 
@@ -90,35 +91,33 @@
 
 </div>
 
-<!-- WalletConnect SDK -->
+<!-- ✅ STABLE WalletConnect -->
 <script src="https://unpkg.com/@walletconnect/ethereum-provider@2.8.0/dist/index.umd.min.js"></script>
 
 <script>
-let provider;
-
 async function connectWallet() {
   try {
-    provider = await window.EthereumProvider.init({
+    if (!window.EthereumProvider) {
+      alert("Refresh page");
+      return;
+    }
+
+    const provider = await window.EthereumProvider.init({
       projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
       chains: [1],
-      showQrModal: true,
-      metadata: {
-        name: "HubX Wallet By FastFitHub",
-        description: "Premium Fitness Powered Wallet",
-        url: "https://hubxwallet.vercel.app",
-        icons: ["https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_placeholder.png"]
-      }
+      showQrModal: true
     });
 
     await provider.enable();
 
-    const accounts = provider.accounts;
-    const short = accounts[0].slice(0,6) + "..." + accounts[0].slice(-4);
+    const acc = provider.accounts[0];
+    const short = acc.slice(0,6) + "..." + acc.slice(-4);
 
     document.querySelector(".status").innerText = short;
 
-  } catch (err) {
-    console.log(err);
+  } catch (e) {
+    alert("Connection failed");
+    console.log(e);
   }
 }
 </script>
