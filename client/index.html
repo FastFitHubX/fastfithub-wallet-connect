@@ -5,52 +5,113 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-    body {
+    bodybody {
   margin: 0;
-  font-family: -apple-system;
+  font-family: -apple-system, BlinkMacSystemFont;
   background: radial-gradient(circle at 50% 20%, #1a1a1a, #000 70%);
   color: white;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  overflow: hidden;
+
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-/* 🔥 LOGO GLOW + ANIMATION */
+/* CONTAINER */
+.container {
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+}
+
+/* 🔥 LOGO (NO BOX — PURE BLEND) */
 .logo-wrap {
-  width: 120px;
-  height: 120px;
+  width: 110px;
+  height: 110px;
   margin: 0 auto 18px;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  border-radius: 30px;
+  background: radial-gradient(circle, rgba(212,175,55,0.22), transparent 75%);
+  border-radius: 50%;
 
-  /* 🔥 LIGHT GLASS — NOT OPAQUE */
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-
-  /* 🔥 GOLD AMBIENT GLOW */
-  box-shadow:
-    0 20px 60px rgba(212,175,55,0.15),
-    inset 0 0 20px rgba(255,255,255,0.05);
-
-  animation: premiumFloat 4s ease-in-out infinite;
+  animation: pulseGlow 3s ease-in-out infinite;
 }
 
-@keyframes premiumFloat {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-4px); }
-  100% { transform: translateY(0px); }
+@keyframes pulseGlow {
+  0% { filter: blur(0px); opacity: 0.8; }
+  50% { filter: blur(2px); opacity: 1; }
+  100% { filter: blur(0px); opacity: 0.8; }
 }
 
 .logo {
-  width: 75px;
-  height: 75px;
+  width: 70px;
+  height: 70px;
   object-fit: contain;
+}
+
+/* TEXT */
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.powered {
+  font-size: 13px;
+  color: #aaa;
+  margin-bottom: 32px;
+}
+
+/* 🔥 BUTTON (OPTIMIZED SIZE) */
+.btn {
+  width: 100%;
+  padding: 14px; /* reduced from bulky */
+  border-radius: 30px;
+  border: none;
+
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+
+  background: linear-gradient(120deg,#d4af37,#000,#d4af37);
+  background-size: 200% 100%;
+  animation: shine 4s linear infinite;
+
+  box-shadow: 0 12px 35px rgba(212,175,55,0.25);
+}
+
+@keyframes shine {
+  0% { background-position: 0% }
+  100% { background-position: 200% }
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+/* 🔥 DEPTH LAYERS */
+body::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 35%;
+  top: 0;
+  background: radial-gradient(circle, rgba(212,175,55,0.08), transparent 70%);
+}
+
+body::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 40%;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
 }
 
   /* ❌ REMOVE BACKGROUND BOX */
