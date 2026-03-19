@@ -3,142 +3,58 @@
 <head>
   <title>HubX Wallet</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <style>
     html, body {
-      margin:0;
-      padding:0;
-      height:100%;
-      background:#000;
-      font-family:-apple-system;
-      color:#fff;
+      margin:0; padding:0; height:100%; background:#000;
+      font-family:-apple-system, sans-serif; color:#fff;
     }
-
-    /* PERFECT CENTER */
     .container {
-      min-height:100dvh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
+      min-height:100dvh; display:flex; align-items:center;
+      justify-content:center; text-align:center;
     }
-
     #login {
-      width:100%;
-      max-width:400px;
-      padding:20px;
+      width:100%; max-width:400px; padding:20px;
     }
-
-    .logo {
-      width:110px;
-      margin-bottom:30px;
-    }
-
-    h2 {
-      font-size:34px;
-      margin:0;
-    }
-
-    p {
-      margin:15px 0 40px;
-      color:#aaa;
-      font-size:18px;
-    }
-
-    /* BUTTON */
+    .logo { width:110px; margin-bottom:30px; }
+    h2 { font-size:34px; margin:0; }
+    p { margin:15px 0 40px; color:#aaa; font-size:18px; }
     .btn {
-      width:100%;
-      max-width:340px;
-      padding:18px;
-      border:none;
-      border-radius:999px;
-      font-weight:700;
-      font-size:18px;
-      color:#fff;
-
+      width:100%; max-width:340px; padding:18px; border:none;
+      border-radius:999px; font-weight:700; font-size:18px; color:#fff;
       background:linear-gradient(90deg,#3a2f00,#d4af37,#3a2f00);
-      background-size:200%;
-      animation:shine 3s linear infinite;
-
+      background-size:200%; animation:shine 3s linear infinite;
       box-shadow:0 10px 30px rgba(212,175,55,0.3);
     }
-
-    .btn:active {
-      transform:scale(0.95);
-    }
-
+    .btn:active { transform:scale(0.95); }
     @keyframes shine {
-      0% {background-position:0%}
-      100% {background-position:200%}
+      0% {background-position:0%} 100% {background-position:200%}
     }
-
-    /* DASHBOARD */
-    #app {
-      display:none;
-      padding:20px;
-    }
-
-    .actions {
-      display:flex;
-      justify-content:space-around;
-      margin:30px 0;
-    }
-
+    #app { display:none; padding:20px; }
+    .actions { display:flex; justify-content:space-around; margin:30px 0; }
     .circle {
-      width:90px;
-      height:90px;
-      border-radius:50%;
-      border:2px solid #d4af37;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:600;
+      width:90px; height:90px; border-radius:50%;
+      border:2px solid #d4af37; display:flex; align-items:center;
+      justify-content:center; font-weight:600; cursor:pointer;
     }
-
-    .card {
-      background:#111;
-      border-radius:20px;
-      padding:15px;
-      text-align:left;
-    }
-
-    .row {
-      display:flex;
-      justify-content:space-between;
-      margin:12px 0;
-    }
-
-    .green {color:#4caf50}
-    .red {color:#f44336}
-
-    .disconnect {
-      margin-top:10px;
-      font-size:12px;
-      color:#888;
-      text-align:center;
-    }
+    .card { background:#111; border-radius:20px; padding:15px; text-align:left; }
+    .row { display:flex; justify-content:space-between; margin:12px 0; }
+    .green {color:#4caf50} .red {color:#f44336}
+    .disconnect { margin-top:10px; font-size:12px; color:#888; text-align:center; cursor:pointer; }
   </style>
 </head>
-
 <body>
 
 <div class="container">
-
-  <!-- LOGIN -->
   <div id="login">
-    <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png">
+    <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png" alt="HubX">
     <h2>HubX Wallet</h2>
     <p>Powered by FastFitHub</p>
-
     <button class="btn" id="connectBtn">Connect Wallet</button>
   </div>
-
 </div>
 
-<!-- DASHBOARD -->
 <div id="app">
-  <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png">
-
+  <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png" alt="HubX">
   <p id="address"></p>
   <h1 id="balance">₹0.00</h1>
 
@@ -149,7 +65,6 @@
   </div>
 
   <h3>All Assets</h3>
-
   <div class="card" id="assets"></div>
 
   <div class="disconnect" onclick="disconnect()">Disconnect Wallet</div>
@@ -160,86 +75,79 @@ import EthereumProvider from "https://esm.sh/@walletconnect/ethereum-provider@2.
 
 let provider;
 
-// INIT
-provider = await EthereumProvider.init({
-  projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
-  chains: [1],
-  showQrModal: true
-});
-
-// CONNECT
-document.getElementById("connectBtn").onclick = async () => {
-  await provider.connect();
-};
-
-// SUCCESS
-provider.on("connect", async () => {
-  const address = provider.accounts[0];
-
-  document.getElementById("login").style.display = "none";
-  document.querySelector(".container").style.display = "none";
-  document.getElementById("app").style.display = "block";
-
-  document.getElementById("address").innerText =
-    address.slice(0,6)+"..."+address.slice(-4);
-
-  loadData();
-});
-
-// FETCH DATA
-async function loadData(){
-  const prices = await fetch(
-    "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,dogecoin&vs_currencies=inr&include_24hr_change=true"
-  ).then(r=>r.json());
-
-  const assets = [
-    {name:"HubX", symbol:"HUBX", price:0},
-    {name:"Bitcoin", symbol:"BTC", price:prices.bitcoin.inr, change:prices.bitcoin.inr_24h_change},
-    {name:"Ethereum", symbol:"ETH", price:prices.ethereum.inr, change:prices.ethereum.inr_24h_change},
-    {name:"Solana", symbol:"SOL", price:prices.solana.inr, change:prices.solana.inr_24h_change},
-    {name:"Dogecoin", symbol:"DOGE", price:prices.dogecoin.inr, change:prices.dogecoin.inr_24h_change}
-  ];
-
-  let html = "";
-
-  assets.forEach(a=>{
-    html += `
-      <div class="row">
-        <div>
-          <strong>${a.name}</strong><br>
-          <small>${a.symbol}</small>
-        </div>
-        <div style="text-align:right;">
-          ₹${a.price.toFixed(2)}<br>
-          <small class="${a.change>=0?'green':'red'}">
-            ${a.change ? a.change.toFixed(2)+'%' : '+0%'}
-          </small>
-        </div>
-      </div>
-      <hr style="border-color:#222;">
-    `;
+(async () => {
+  provider = await EthereumProvider.init({
+    projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
+    chains: [1],
+    showQrModal: true
   });
 
-  document.getElementById("assets").innerHTML = html;
+  document.getElementById("connectBtn").onclick = async () => {
+    await provider.connect();
+  };
+
+  provider.on("connect", async () => {
+    const address = provider.accounts[0];
+    document.getElementById("login").style.display = "none";
+    document.querySelector(".container").style.display = "none";
+    document.getElementById("app").style.display = "block";
+
+    document.getElementById("address").innerText =
+      address.slice(0,6) + "..." + address.slice(-4);
+
+    loadData();
+  });
+})();
+
+async function loadData() {
+  try {
+    const res = await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,dogecoin&vs_currencies=inr&include_24hr_change=true"
+    );
+    if (!res.ok) throw new Error(res.status);
+    const prices = await res.json();
+
+    const assets = [
+      {name:"HubX", symbol:"HUBX", price:0.15, change:0}, // placeholder
+      {name:"Bitcoin",  symbol:"BTC",  price:prices.bitcoin.inr,   change:prices.bitcoin.inr_24h_change},
+      {name:"Ethereum", symbol:"ETH",  price:prices.ethereum.inr, change:prices.ethereum.inr_24h_change},
+      {name:"Solana",   symbol:"SOL",  price:prices.solana.inr,   change:prices.solana.inr_24h_change},
+      {name:"Dogecoin", symbol:"DOGE", price:prices.dogecoin.inr, change:prices.dogecoin.inr_24h_change}
+    ];
+
+    let html = "";
+    assets.forEach(a => {
+      html += `
+        <div class="row">
+          <div>
+            <strong>${a.name}</strong><br>
+            <small>${a.symbol}</small>
+          </div>
+          <div style="text-align:right;">
+            ₹${a.price.toFixed(2)}<br>
+            <small class="${a.change >= 0 ? 'green' : 'red'}">
+              ${a.change ? a.change.toFixed(2) + '%' : '0.00%'}
+            </small>
+          </div>
+        </div>
+        <hr style="border-color:#222;">
+      `;
+    });
+
+    document.getElementById("assets").innerHTML = html;
+  } catch (e) {
+    document.getElementById("assets").innerHTML = "<p>Error loading prices</p>";
+  }
 }
 
-// ACTIONS
-window.send = () => alert("Send coming next phase");
+window.send  = () => alert("Send coming next phase");
+window.swap  = () => window.open("https://jup.ag/swap/SOL-USDC", "_blank");
+window.buy   = () => window.open("https://anoncoin.it/hubx", "_blank");
 
-window.swap = () => {
-  window.open("https://jup.ag/swap/SOL-USDC","_blank");
-};
-
-window.buy = () => {
-  window.open("https://anoncoin.it/hubx","_blank");
-};
-
-// DISCONNECT
 window.disconnect = async () => {
   await provider.disconnect();
   location.reload();
 };
 </script>
-
 </body>
 </html>
