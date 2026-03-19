@@ -1,110 +1,409 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>HubX Wallet</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style>
-    body {
-      margin:0;
-      font-family:-apple-system;
-      background:#000;
-      color:#fff;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      height:100vh;
+    :root {
+      --gold: #d4af37;
+      --black: #000000;
+      --dark-grey: #121212;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(212, 175, 55, 0.2);
     }
 
-    .container {
-      width:90%;
-      max-width:360px;
-      text-align:center;
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--black);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* --- Animations --- */
+    @keyframes shine {
+      0% { background-position: 0% }
+      100% { background-position: 200% }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- Landing View --- */
+    #landingView {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 90%;
+      max-width: 360px;
+      text-align: center;
+      animation: fadeIn 0.8s ease-out;
     }
 
     .logo {
-      width:90px;
-      margin-bottom:20px;
+      width: 90px;
+      margin-bottom: 20px;
     }
 
     .btn {
-      width:100%;
-      padding:16px;
-      border:none;
-      border-radius:30px;
-      font-size:16px;
-      font-weight:600;
-      color:#fff;
-      background: linear-gradient(120deg,#d4af37,#000,#d4af37);
-      background-size:200%;
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(120deg, var(--gold), var(--black), var(--gold));
+      background-size: 200%;
       animation: shine 4s linear infinite;
+      cursor: pointer;
+      transition: transform 0.2s;
     }
 
-    @keyframes shine {
-      0% { background-position:0% }
-      100% { background-position:200% }
+    .btn:active {
+      transform: scale(0.98);
     }
+
+    /* --- Dashboard View --- */
+    #dashboardView {
+      display: none;
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+      box-sizing: border-box;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .wallet-info {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .balance-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .total-label {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 8px;
+    }
+
+    .total-amount {
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: -1px;
+    }
+
+    /* --- Action Buttons --- */
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 40px;
+    }
+
+    .action-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      background: none;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .icon-circle {
+      width: 56px;
+      height: 56px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s;
+    }
+
+    .icon-circle svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--gold);
+    }
+
+    .action-btn:active .icon-circle {
+      background: var(--gold);
+      transform: scale(0.9);
+    }
+
+    .action-btn:active svg {
+      fill: #000;
+    }
+
+    .action-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #ccc;
+    }
+
+    /* --- Asset List --- */
+    .assets-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      padding-left: 5px;
+    }
+
+    .asset-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--glass);
+      padding: 16px;
+      border-radius: 18px;
+      margin-bottom: 12px;
+      border: 1px solid transparent;
+      transition: border 0.3s;
+    }
+
+    .asset-item:active {
+      border-color: var(--glass-border);
+    }
+
+    .asset-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .asset-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #1a1a1a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 14px;
+      color: var(--gold);
+      border: 1px solid #333;
+    }
+
+    .asset-name {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .asset-symbol {
+      font-size: 12px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    .asset-right {
+      text-align: right;
+    }
+
+    .asset-value {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .asset-balance {
+      font-size: 12px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    /* --- Hide Scrollbar --- */
+    ::-webkit-scrollbar { display: none; }
   </style>
 </head>
 
 <body>
 
-<div class="container">
-  <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png">
-  <h2>HubX Wallet</h2>
-  <p>Powered by FastFitHub</p>
+  <!-- Landing View -->
+  <div id="landingView">
+    <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png" alt="HubX Logo">
+    <h2 style="margin-bottom: 5px;">HubX Wallet</h2>
+    <p style="color: #888; margin-bottom: 30px;">Powered by FastFitHub</p>
+    <button class="btn" id="connectBtn">Connect Wallet</button>
+  </div>
 
-  <button class="btn" id="connectBtn">
-    Connect Wallet
-  </button>
-</div>
+  <!-- Dashboard View -->
+  <div id="dashboardView">
+    <div class="header">
+      <img src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png" style="width: 32px;">
+      <div class="wallet-info" id="walletAddress">0x0000...0000</div>
+    </div>
 
-<script type="module">
-import EthereumProvider from "https://esm.sh/@walletconnect/ethereum-provider@2.8.0";
+    <div class="balance-section">
+      <div class="total-label">Total Balance</div>
+      <div class="total-amount">$12,450.80</div>
+    </div>
 
-let provider;
+    <div class="actions">
+      <button class="action-btn" onclick="sendToken()">
+        <div class="icon-circle">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </div>
+        <div class="action-label">Send</div>
+      </button>
+      <button class="action-btn" onclick="swapToken()">
+        <div class="icon-circle">
+          <svg viewBox="0 0 24 24"><path d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"/></svg>
+        </div>
+        <div class="action-label">Swap</div>
+      </button>
+      <button class="action-btn" onclick="buyCrypto()">
+        <div class="icon-circle">
+          <svg viewBox="0 0 24 24"><path d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-8.9-5h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4.47c.19-.35.05-.78-.3-.97-.35-.19-.78-.05-.97.3L16.75 9H8.53L4.27 0H1v2h2l3.6 7.59-1.35 2.44C4.52 13.42 5.42 15 7 15h12v-2H7l1.1-2z"/></svg>
+        </div>
+        <div class="action-label">Buy</div>
+      </button>
+    </div>
 
-// ✅ INIT ONCE
-provider = await EthereumProvider.init({
-  projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
-  chains: [1],
-  showQrModal: true, // THIS shows your exact UI
-  metadata: {
-    name: "HubX Wallet",
-    description: "HubX Wallet",
-    url: "https://wallet.fastfithub.com",
-    icons: ["https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png"]
-  }
-});
+    <div class="assets-title">Assets</div>
+    
+    <div id="assetList">
+      <!-- HUBX -->
+      <div class="asset-item">
+        <div class="asset-left">
+          <div class="asset-icon">HX</div>
+          <div>
+            <div class="asset-name">HubX</div>
+            <div class="asset-symbol">HUBX</div>
+          </div>
+        </div>
+        <div class="asset-right">
+          <div class="asset-value">$8,240.00</div>
+          <div class="asset-balance">1,000,000 HUBX</div>
+        </div>
+      </div>
 
-// ✅ BUTTON WORKING
-document.getElementById("connectBtn").onclick = async () => {
-  try {
-    document.getElementById("connectBtn").innerText = "Opening...";
+      <!-- DOGE -->
+      <div class="asset-item">
+        <div class="asset-left">
+          <div class="asset-icon">Ð</div>
+          <div>
+            <div class="asset-name">Dogecoin</div>
+            <div class="asset-symbol">DOGE</div>
+          </div>
+        </div>
+        <div class="asset-right">
+          <div class="asset-value">$2,150.20</div>
+          <div class="asset-balance">12,500 DOGE</div>
+        </div>
+      </div>
 
-    await provider.connect(); // ONLY THIS
+      <!-- BTC -->
+      <div class="asset-item">
+        <div class="asset-left">
+          <div class="asset-icon">₿</div>
+          <div>
+            <div class="asset-name">Bitcoin</div>
+            <div class="asset-symbol">BTC</div>
+          </div>
+        </div>
+        <div class="asset-right">
+          <div class="asset-value">$1,420.50</div>
+          <div class="asset-balance">0.022 BTC</div>
+        </div>
+      </div>
 
-  } catch (err) {
-    console.error(err);
-    document.getElementById("connectBtn").innerText = "Connect Wallet";
-  }
-};
+      <!-- SOL -->
+      <div class="asset-item">
+        <div class="asset-left">
+          <div class="asset-icon">S</div>
+          <div>
+            <div class="asset-name">Solana</div>
+            <div class="asset-symbol">SOL</div>
+          </div>
+        </div>
+        <div class="asset-right">
+          <div class="asset-value">$640.10</div>
+          <div class="asset-balance">4.5 SOL</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-// ✅ SUCCESS
-provider.on("connect", () => {
-  const address = provider.accounts[0];
+  <script type="module">
+    import EthereumProvider from "https://esm.sh/@walletconnect/ethereum-provider@2.8.0";
 
-  document.getElementById("connectBtn").innerText =
-    address.slice(0,6) + "..." + address.slice(-4);
-});
+    let provider;
 
-// ✅ AUTO RESTORE
-if (provider.session) {
-  const address = provider.accounts[0];
-  document.getElementById("connectBtn").innerText =
-    address.slice(0,6) + "..." + address.slice(-4);
-}
-</script>
+    // --- Future Functions ---
+    window.sendToken = () => { console.log("Send initiated"); };
+    window.swapToken = () => { console.log("Swap initiated"); };
+    window.buyCrypto = () => { console.log("Buy initiated"); };
+
+    const showDashboard = (address) => {
+      document.getElementById('landingView').style.display = 'none';
+      document.getElementById('dashboardView').style.display = 'block';
+      document.getElementById('walletAddress').innerText = address.slice(0, 6) + "..." + address.slice(-4);
+      document.body.style.alignItems = 'flex-start';
+    };
+
+    // ✅ INIT ONCE
+    provider = await EthereumProvider.init({
+      projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
+      chains: [1],
+      showQrModal: true,
+      metadata: {
+        name: "HubX Wallet",
+        description: "HubX Wallet",
+        url: "https://wallet.fastfithub.com",
+        icons: ["https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png"]
+      }
+    });
+
+    // ✅ BUTTON WORKING
+    document.getElementById("connectBtn").onclick = async () => {
+      try {
+        document.getElementById("connectBtn").innerText = "Opening...";
+        await provider.connect();
+      } catch (err) {
+        console.error(err);
+        document.getElementById("connectBtn").innerText = "Connect Wallet";
+      }
+    };
+
+    // ✅ SUCCESS
+    provider.on("connect", () => {
+      const address = provider.accounts[0];
+      showDashboard(address);
+    });
+
+    // ✅ AUTO RESTORE
+    if (provider.session) {
+      const address = provider.accounts[0];
+      showDashboard(address);
+    }
+  </script>
 
 </body>
-</html> 
+</html>
