@@ -5,46 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-    body {
+    html, body {
       margin:0;
-      font-family:-apple-system;
+      padding:0;
+      height:100%;
       background:#000;
+      font-family:-apple-system;
       color:#fff;
-      height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
     }
 
+    /* PERFECT CENTER */
     .container {
-      width:100%;
-      max-width:420px;
-      padding:20px;
+      min-height:100dvh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       text-align:center;
     }
 
-    /* CENTER */
     #login {
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      height:100vh;
-      transform:translateY(-40px);
+      width:100%;
+      max-width:400px;
+      padding:20px;
     }
 
     .logo {
-      width:100px;
+      width:110px;
       margin-bottom:30px;
     }
 
     h2 {
-      font-size:32px;
+      font-size:34px;
       margin:0;
     }
 
     p {
-      margin:15px 0 35px;
+      margin:15px 0 40px;
       color:#aaa;
       font-size:18px;
     }
@@ -59,9 +55,11 @@
       font-weight:700;
       font-size:18px;
       color:#fff;
+
       background:linear-gradient(90deg,#3a2f00,#d4af37,#3a2f00);
       background-size:200%;
       animation:shine 3s linear infinite;
+
       box-shadow:0 10px 30px rgba(212,175,55,0.3);
     }
 
@@ -75,6 +73,11 @@
     }
 
     /* DASHBOARD */
+    #app {
+      display:none;
+      padding:20px;
+    }
+
     .actions {
       display:flex;
       justify-content:space-around;
@@ -112,6 +115,7 @@
       margin-top:10px;
       font-size:12px;
       color:#888;
+      text-align:center;
     }
   </style>
 </head>
@@ -126,30 +130,29 @@
     <h2>HubX Wallet</h2>
     <p>Powered by FastFitHub</p>
 
-    <!-- ✅ FIXED BUTTON -->
     <button class="btn" id="connectBtn">Connect Wallet</button>
   </div>
 
-  <!-- DASHBOARD -->
-  <div id="app" style="display:none;">
-    <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png">
+</div>
 
-    <p id="address"></p>
-    <h1 id="balance">₹0.00</h1>
+<!-- DASHBOARD -->
+<div id="app">
+  <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png">
 
-    <div class="actions">
-      <div class="circle" onclick="send()">Send</div>
-      <div class="circle" onclick="swap()">Swap</div>
-      <div class="circle" onclick="buy()">Buy</div>
-    </div>
+  <p id="address"></p>
+  <h1 id="balance">₹0.00</h1>
 
-    <h3 style="text-align:left;">All Assets</h3>
-
-    <div class="card" id="assets"></div>
-
-    <div class="disconnect" onclick="disconnect()">Disconnect Wallet</div>
+  <div class="actions">
+    <div class="circle" onclick="send()">Send</div>
+    <div class="circle" onclick="swap()">Swap</div>
+    <div class="circle" onclick="buy()">Buy</div>
   </div>
 
+  <h3>All Assets</h3>
+
+  <div class="card" id="assets"></div>
+
+  <div class="disconnect" onclick="disconnect()">Disconnect Wallet</div>
 </div>
 
 <script type="module">
@@ -174,6 +177,7 @@ provider.on("connect", async () => {
   const address = provider.accounts[0];
 
   document.getElementById("login").style.display = "none";
+  document.querySelector(".container").style.display = "none";
   document.getElementById("app").style.display = "block";
 
   document.getElementById("address").innerText =
