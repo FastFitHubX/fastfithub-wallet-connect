@@ -6,54 +6,75 @@
 
   <style>
     body {
-  margin:0;
-  font-family:-apple-system;
-  background:#000;
-  color:#fff;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
+      margin:0;
+      font-family:-apple-system;
+      background:#000;
+      color:#fff;
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
 
-.container {
-  width:100%;
-  max-width:420px;
-  padding:20px;
-  text-align:center;
-}
+    .container {
+      width:100%;
+      max-width:420px;
+      padding:20px;
+      text-align:center;
+    }
 
-/* PERFECT CENTER FIX */
-#login {
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  transform:translateY(-40px); /* 🔥 slight lift = visual center */
-}
+    /* CENTER */
+    #login {
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+      transform:translateY(-40px);
+    }
 
-.logo {
-  width:90px;
-  margin-bottom:25px;
-}
+    .logo {
+      width:100px;
+      margin-bottom:30px;
+    }
 
-h2 {
-  font-size:28px;
-  margin:0;
-}
+    h2 {
+      font-size:32px;
+      margin:0;
+    }
 
-p {
-  margin:10px 0 30px;
-  color:#aaa;
-  font-size:18px;
-}
+    p {
+      margin:15px 0 35px;
+      color:#aaa;
+      font-size:18px;
+    }
+
+    /* BUTTON */
+    .btn {
+      width:100%;
+      max-width:340px;
+      padding:18px;
+      border:none;
+      border-radius:999px;
+      font-weight:700;
+      font-size:18px;
+      color:#fff;
+      background:linear-gradient(90deg,#3a2f00,#d4af37,#3a2f00);
+      background-size:200%;
+      animation:shine 3s linear infinite;
+      box-shadow:0 10px 30px rgba(212,175,55,0.3);
+    }
+
+    .btn:active {
+      transform:scale(0.95);
+    }
 
     @keyframes shine {
       0% {background-position:0%}
       100% {background-position:200%}
     }
 
+    /* DASHBOARD */
     .actions {
       display:flex;
       justify-content:space-around;
@@ -99,32 +120,15 @@ p {
 
 <div class="container">
 
-  <!-- CONNECT SCREEN -->
+  <!-- LOGIN -->
   <div id="login">
     <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png">
     <h2>HubX Wallet</h2>
-    <p style="color:#aaa;">Powered by FastFitHub</p>
+    <p>Powered by FastFitHub</p>
 
-    .btn {
-  width:100%;
-  max-width:320px;
-  padding:18px;
-  border:none;
-  border-radius:999px;
-  font-weight:700;
-  font-size:18px;
-  color:#fff;
-
-  background:linear-gradient(90deg,#3a2f00,#d4af37,#3a2f00);
-  background-size:200%;
-  animation:shine 3s linear infinite;
-
-  box-shadow:0 10px 30px rgba(212,175,55,0.3);
-}
-
-.btn:active {
-  transform:scale(0.95);
-}
+    <!-- ✅ FIXED BUTTON -->
+    <button class="btn" id="connectBtn">Connect Wallet</button>
+  </div>
 
   <!-- DASHBOARD -->
   <div id="app" style="display:none;">
@@ -157,13 +161,7 @@ let provider;
 provider = await EthereumProvider.init({
   projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
   chains: [1],
-  showQrModal: true,
-  metadata: {
-    name: "HubX Wallet",
-    description: "HubX Wallet",
-    url: window.location.origin,
-    icons: ["https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png"]
-  }
+  showQrModal: true
 });
 
 // CONNECT
@@ -181,13 +179,11 @@ provider.on("connect", async () => {
   document.getElementById("address").innerText =
     address.slice(0,6)+"..."+address.slice(-4);
 
-  loadData(address);
+  loadData();
 });
 
 // FETCH DATA
-async function loadData(address){
-
-  // Prices
+async function loadData(){
   const prices = await fetch(
     "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,dogecoin&vs_currencies=inr&include_24hr_change=true"
   ).then(r=>r.json());
@@ -223,13 +219,15 @@ async function loadData(address){
   document.getElementById("assets").innerHTML = html;
 }
 
-// BUTTON ACTIONS
+// ACTIONS
 window.send = () => alert("Send coming next phase");
-window.swap = () => alert("Swap coming next phase");
 
-// 🔥 BUY → OPEN HUBX PAGE
+window.swap = () => {
+  window.open("https://jup.ag/swap/SOL-USDC","_blank");
+};
+
 window.buy = () => {
-  window.open("https://app.binance.com/uni-qr/web3-token-details?tokenCA=DvqPDwmww1Cm865cS8q2PxNp3dx7nERE3ZpHzRxwdoge","_blank");
+  window.open("https://anoncoin.it/hubx","_blank");
 };
 
 // DISCONNECT
@@ -237,7 +235,6 @@ window.disconnect = async () => {
   await provider.disconnect();
   location.reload();
 };
-
 </script>
 
 </body>
