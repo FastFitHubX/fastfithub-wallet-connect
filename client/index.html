@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HubX Wallet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin:0;
+      font-family:-apple-system;
+      background:#000;
+      color:#fff;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+    }
+
+    .container {
+      width:90%;
+      max-width:360px;
+      text-align:center;
+    }
+
+    .logo {
+      width:90px;
+      margin-bottom:20px;
+    }
+
+    .btn {
+      width:100%;
+      padding:16px;
+      border:none;
+      border-radius:30px;
+      font-size:16px;
+      font-weight:600;
+      color:#fff;
+      background: linear-gradient(120deg,#d4af37,#000,#d4af37);
+      background-size:200%;
+      animation: shine 4s linear infinite;
+    }
+
+    @keyframes shine {
+      0% { background-position:0% }
+      100% { background-position:200% }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <img class="logo" src="https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png">
+  <h2>HubX Wallet</h2>
+  <p>Powered by FastFitHub</p>
+
+  <button class="btn" id="connectBtn">
+    Connect Wallet
+  </button>
+</div>
+
+<script type="module">
+import EthereumProvider from "https://esm.sh/@walletconnect/ethereum-provider@2.8.0";
+
+let provider;
+
+// ✅ INIT ONCE
+provider = await EthereumProvider.init({
+  projectId: "fc6f49c8d5951ff17e19d159f1dafe98",
+  chains: [1],
+  showQrModal: true, // THIS shows your exact UI
+  metadata: {
+    name: "HubX Wallet",
+    description: "HubX Wallet",
+    url: "https://wallet.fastfithub.com",
+    icons: ["https://i.ibb.co/7x1v4ZqM/Photoroom-20250523-163646.png"]
+  }
+});
+
+// ✅ BUTTON WORKING
+document.getElementById("connectBtn").onclick = async () => {
+  try {
+    document.getElementById("connectBtn").innerText = "Opening...";
+
+    await provider.connect(); // ONLY THIS
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById("connectBtn").innerText = "Connect Wallet";
+  }
+};
+
+// ✅ SUCCESS
+provider.on("connect", () => {
+  const address = provider.accounts[0];
+
+  document.getElementById("connectBtn").innerText =
+    address.slice(0,6) + "..." + address.slice(-4);
+});
+
+// ✅ AUTO RESTORE
+if (provider.session) {
+  const address = provider.accounts[0];
+  document.getElementById("connectBtn").innerText =
+    address.slice(0,6) + "..." + address.slice(-4);
+}
+</script>
+
+</body>
+</html> 
