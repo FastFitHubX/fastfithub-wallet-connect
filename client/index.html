@@ -6,34 +6,48 @@
 
   <style>
     body {
-      margin:0;
-      font-family:-apple-system;
-      background:#000;
-      color:#fff;
-    }
+  margin:0;
+  font-family:-apple-system;
+  background:#000;
+  color:#fff;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
 
-    .container {
-      max-width:420px;
-      margin:auto;
-      padding:20px;
-      text-align:center;
-    }
+.container {
+  width:100%;
+  max-width:420px;
+  padding:20px;
+  text-align:center;
+}
 
-    .logo {
-      width:70px;
-      margin-top:20px;
-    }
+/* PERFECT CENTER FIX */
+#login {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  transform:translateY(-40px); /* 🔥 slight lift = visual center */
+}
 
-    .btn {
-      padding:14px 24px;
-      border:none;
-      border-radius:30px;
-      font-weight:600;
-      color:#fff;
-      background:linear-gradient(120deg,#d4af37,#000,#d4af37);
-      background-size:200%;
-      animation:shine 4s linear infinite;
-    }
+.logo {
+  width:90px;
+  margin-bottom:25px;
+}
+
+h2 {
+  font-size:28px;
+  margin:0;
+}
+
+p {
+  margin:10px 0 30px;
+  color:#aaa;
+  font-size:18px;
+}
 
     @keyframes shine {
       0% {background-position:0%}
@@ -91,8 +105,26 @@
     <h2>HubX Wallet</h2>
     <p style="color:#aaa;">Powered by FastFitHub</p>
 
-    <button class="btn" id="connectBtn">Connect Wallet</button>
-  </div>
+    .btn {
+  width:100%;
+  max-width:320px;
+  padding:18px;
+  border:none;
+  border-radius:999px;
+  font-weight:700;
+  font-size:18px;
+  color:#fff;
+
+  background:linear-gradient(90deg,#3a2f00,#d4af37,#3a2f00);
+  background-size:200%;
+  animation:shine 3s linear infinite;
+
+  box-shadow:0 10px 30px rgba(212,175,55,0.3);
+}
+
+.btn:active {
+  transform:scale(0.95);
+}
 
   <!-- DASHBOARD -->
   <div id="app" style="display:none;">
